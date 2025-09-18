@@ -1,0 +1,31 @@
+@use "@styles/variables" as *;
+
+$borderRadius: 8px;
+
+.FieldBuilder {
+  width: fit-content;
+  min-width: 500px;
+  background-color: $neutral-100;
+
+  .FieldBuilderHeader {
+    padding: 10px;
+    background-color: $color-secondary;
+
+    border: 1px solid $color-secondary;
+    border-top-left-radius: $borderRadius;
+    border-top-right-radius: $borderRadius;
+
+    .FieldBuilderTitle {
+      font-weight: 600;
+      color: $color-foreground-secondary;
+    }
+  }
+
+  .FieldBuilderFormContainer {
+    padding: 10px;
+    border: 1px solid $color-secondary;
+    border-top: none;
+    border-bottom-left-radius: $borderRadius;
+    border-bottom-right-radius: $borderRadius;
+  }
+}
