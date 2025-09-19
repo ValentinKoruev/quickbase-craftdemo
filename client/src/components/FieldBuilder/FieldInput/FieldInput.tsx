@@ -34,7 +34,12 @@ const FieldInput: React.FC<FieldInputProps> = ({ variant, label }) => {
 
   return (
     <div className={styles.FieldInputContainer}>
-      <label className={styles.InputLabel}>{label}</label>
+      <label
+        className={styles.InputLabel}
+        htmlFor={variant.type !== "readonly" ? variant.id : undefined}
+      >
+        {label}
+      </label>
       {renderFieldVariant()}
     </div>
   );

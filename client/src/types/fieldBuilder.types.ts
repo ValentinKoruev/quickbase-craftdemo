@@ -40,6 +40,7 @@ export type FieldVariantList = {
   id: string;
   choices: string[];
   onChoiceChange: (newChoices: string[]) => void;
+  sort?: "asc" | "desc";
 };
 
 export type FieldVariant =
@@ -52,7 +53,8 @@ export type FieldVariant =
 export type FieldBuilderData = {
   label: string;
   type: string;
-  defaultValue?: string;
+  required: boolean;
+  default?: string;
   choices?: string[];
   order?: "asc" | "desc";
 };

@@ -31,9 +31,22 @@ const field = {
   default: "North America",
 };
 
-// test endpoint to get field configuration
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
 app.get("/api/field", (req, res) => {
   res.json(field);
+});
+
+app.post("/api/field", async (req, res) => {
+  console.log("Received field data:", req.body);
+
+  //   await sleep(1000);
+
+  res.json({ status: "success", data: req.body });
 });
 
 app.listen(port, () => {

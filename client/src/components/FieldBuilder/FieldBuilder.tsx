@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import apiQueries from "@queries/api";
 import FieldInput from "@components/FieldBuilder/FieldInput";
 import { Button } from "@components/UI";
 
@@ -10,7 +11,7 @@ interface IFieldBuilderProps {
   required?: boolean;
   defaultValue?: string;
   choices?: string[];
-  order?: string;
+  order?: "asc" | "desc";
 }
 
 const FieldBuilder: React.FC<IFieldBuilderProps> = ({
@@ -27,7 +28,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
     required: required || false,
     defaultValue: defaultValue || "",
     choices: choices || [],
-    order: order || "asc",
+    order: order ?? "asc",
   });
 
   const [formData, setFormData] = useState<IFieldBuilderProps>({
@@ -36,7 +37,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
     required: required || false,
     defaultValue: defaultValue || "",
     choices: choices || [],
-    order: order || "asc",
+    order: order ?? "asc",
   });
 
   const [isFormModified, setIsFormModified] = useState(false);
@@ -55,7 +56,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
     setIsFormModified(isDifferent);
   }, [formData]);
 
-  const validateForm = (): string | null => {
+  const validateForm = (formData: IFieldBuilderProps): string | null => {
     if (!formData.label || formData.label.trim() === "") {
       return "Label is required.";
     }
@@ -92,14 +93,8 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
     }));
   };
 
-  const onSaveChange = (e: FormEvent<HTMLFormElement>) => {
+  const onSaveChange = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const validationError = validateForm();
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
 
     let currentFormData = { ...formData };
     if (
@@ -113,12 +108,53 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
       setFormData(currentFormData);
     }
 
-    console.log(currentFormData);
+    const validationError = validateForm(currentFormData);
+
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    try {
+      const res = await apiQueries.fieldQueries.saveField({
+        //? we can use ! since the validation ensures label and type are present
+        label: currentFormData.label!,
+        type: currentFormData.type!,
+        required: currentFormData.required ?? false,
+        default: currentFormData.defaultValue,
+        choices: currentFormData.choices,
+        order: currentFormData.order,
+      });
+      // TODO: fix whatever this is
+      const data = { ...res.data.data, defaultValue: res.data.data.default };
+
+      console.log("Client saved data:", currentFormData);
+
+      console.log("Field saved successfully:", data);
+
+      setFormData(() => ({ ...data }));
+      initialProps.current = { ...data };
+      setIsFormModified(false);
+      setError(null);
+    } catch (err) {
+      setError("An error occurred while saving the field.");
+    }
   };
 
   const onCancel = () => {
-    console.log("canceled");
     setFormData({ ...initialProps.current });
+  };
+
+  const onClear = () => {
+    setFormData({
+      label: "",
+      type: "multi-select",
+      required: false,
+      defaultValue: "",
+      choices: [],
+      order: "asc",
+    });
+    setError(null);
   };
 
   return (
@@ -174,6 +210,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
             id: "choices",
             name: "choices",
             choices: formData.choices ?? [],
+            sort: formData.order,
             onChoiceChange: onChoiceChange,
           }}
         />

@@ -28,7 +28,7 @@ function App() {
 
   return (
     <div className={styles.AppContainer}>
-      <FieldBuilder {...fieldData} />
+      <FieldBuilder {...fieldData} defaultValue={fieldData.default} />
     </div>
   );
 }

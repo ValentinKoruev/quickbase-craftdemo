@@ -27,6 +27,7 @@
       "@components/*": ["src/components/*"],
       "@customTypes/*": ["src/types/*"],
       "@queries/*": ["src/queries/*"],
+      "@utils/*": ["src/utils/*"],
       "@config": ["src/config"]
     }
   },
