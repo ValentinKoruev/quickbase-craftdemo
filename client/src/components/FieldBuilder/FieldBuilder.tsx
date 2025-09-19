@@ -105,7 +105,6 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
         ...formData,
         choices: [...(formData.choices || []), formData.defaultValue],
       };
-      setFormData(currentFormData);
     }
 
     const validationError = validateForm(currentFormData);
