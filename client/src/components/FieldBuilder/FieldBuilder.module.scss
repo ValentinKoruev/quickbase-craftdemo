@@ -39,5 +39,11 @@ $borderRadius: 8px;
       gap: 10px;
       min-height: 50px;
     }
+
+    .Error {
+      color: $color-danger;
+      font-size: $font-sm;
+      font-weight: 600;
+    }
   }
 }

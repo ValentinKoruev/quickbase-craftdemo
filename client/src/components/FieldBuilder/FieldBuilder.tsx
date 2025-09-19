@@ -40,6 +40,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
   });
 
   const [isFormModified, setIsFormModified] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const initialState = initialProps.current;
@@ -54,11 +55,29 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
     setIsFormModified(isDifferent);
   }, [formData]);
 
+  const validateForm = (): string | null => {
+    if (!formData.label || formData.label.trim() === "") {
+      return "Label is required.";
+    }
+    if (formData.choices && formData.choices.length > 50) {
+      return "Too many choices. Maximum allowed is 50.";
+    }
+    if (formData.choices) {
+      const uniqueChoices = new Set(formData.choices);
+      if (uniqueChoices.size !== formData.choices.length) {
+        return "Choices must be unique.";
+      }
+    }
+
+    return null;
+  };
+
   const onChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
-    console.log(name);
+
+    setError(null);
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? !prev.required : value,
@@ -66,6 +85,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
   };
 
   const onChoiceChange = (newChoices: string[]) => {
+    setError(null);
     setFormData((prev) => ({
       ...prev,
       choices: newChoices,
@@ -74,6 +94,12 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
 
   const onSaveChange = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
 
     let currentFormData = { ...formData };
     if (
@@ -162,7 +188,8 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
             onChange: onChange,
           }}
         />
-
+        <div></div>
+        <div>{error && <span className={styles.Error}>{error}</span>}</div>
         {/* TODO: This empty div is for first grid column spacing. Add aria label*/}
         <div></div>
         <div className={styles.Actions}>
