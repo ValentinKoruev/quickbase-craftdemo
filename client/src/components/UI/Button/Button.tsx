@@ -24,7 +24,7 @@ const borderMap: Record<ButtonBorder, string> = {
   "rounded-full": styles.RoundedFullBorder,
 };
 
-interface IButtonProps {
+export interface IButtonProps {
   variant: ButtonVariant;
   color: ButtonColor;
   label: string;

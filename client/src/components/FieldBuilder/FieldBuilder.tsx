@@ -143,6 +143,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
 
   const onCancel = () => {
     setFormData({ ...initialProps.current });
+    setError(null);
   };
 
   const onClear = () => {
@@ -223,6 +224,21 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
             choices: ["asc", "desc"],
             // value: formData.order ?? "asc",
             onChange: onChange,
+          }}
+        />
+        <FieldInput
+          label="Form Options"
+          variant={{
+            type: "button",
+            button: {
+              inline: true,
+              variant: "primary",
+              color: "danger",
+              label: "Clear",
+              border: "rounded",
+              onClick: onClear,
+              type: "button",
+            },
           }}
         />
         <div></div>

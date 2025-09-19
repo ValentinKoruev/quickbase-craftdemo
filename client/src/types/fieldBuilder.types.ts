@@ -1,3 +1,5 @@
+import type { IButtonProps } from "@components/UI/Button";
+
 export type FieldVariantText = {
   type: "text";
   name: string;
@@ -48,7 +50,13 @@ export type FieldVariant =
   | FieldVariantDropdown
   | FieldVariantCheckbox
   | FieldVariantReadOnly
-  | FieldVariantList;
+  | FieldVariantList
+  | FieldVariantButton;
+
+export type FieldVariantButton = {
+  type: "button";
+  button: IButtonProps;
+};
 
 export type FieldBuilderData = {
   label: string;

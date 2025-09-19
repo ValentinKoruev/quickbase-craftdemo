@@ -5,6 +5,7 @@ import {
   FieldInputCheckbox,
   FieldInputDropdown,
   FieldInputList,
+  FieldInputButton,
 } from "./variants";
 
 import styles from "./FieldInput.module.scss";
@@ -27,6 +28,8 @@ const FieldInput: React.FC<FieldInputProps> = ({ variant, label }) => {
         return <FieldInputCheckbox {...variant} />;
       case "list":
         return <FieldInputList {...variant} />;
+      case "button":
+        return <FieldInputButton {...variant} />;
       default:
         return null;
     }
@@ -36,7 +39,11 @@ const FieldInput: React.FC<FieldInputProps> = ({ variant, label }) => {
     <div className={styles.FieldInputContainer}>
       <label
         className={styles.InputLabel}
-        htmlFor={variant.type !== "readonly" ? variant.id : undefined}
+        htmlFor={
+          variant.type !== "readonly" && variant.type !== "button"
+            ? variant.id
+            : undefined
+        }
       >
         {label}
       </label>
