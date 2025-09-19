@@ -105,52 +105,62 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
         onSubmit={onSaveChange}
       >
         <FieldInput
-          id="label"
-          name="label"
-          variant="text"
           label="Label"
-          value={formData.label}
-          onChange={onChange}
+          variant={{
+            type: "text",
+            name: "label",
+            id: "label",
+            value: formData.label ?? "",
+            onChange: onChange,
+          }}
         />
         <FieldInput
-          id="type"
-          name="type"
-          variant="readonly"
           label="Type"
-          value={formData.type}
-          placeholder="Multi-Select"
+          variant={{
+            type: "readonly",
+            value: formData.type ?? "",
+          }}
         />
         <FieldInput
-          id="required"
-          name="required"
-          variant="checkbox"
           label="Required"
-          required={formData.required}
-          onChange={onChange}
+          variant={{
+            type: "checkbox",
+            id: "required",
+            name: "required",
+            checked: formData.required ?? false,
+            onChange: onChange,
+          }}
         />
         <FieldInput
-          id="defaultValue"
-          name="defaultValue"
-          variant="text"
           label="Default Value"
-          value={formData.defaultValue}
-          onChange={onChange}
+          variant={{
+            type: "text",
+            id: "defaultValue",
+            name: "defaultValue",
+            value: formData.defaultValue ?? "",
+            onChange: onChange,
+          }}
         />
         <FieldInput
-          id="choices"
-          name="choices"
-          variant="list"
           label="Choices"
-          choices={formData.choices}
-          onChoiceChange={onChoiceChange}
+          variant={{
+            type: "list",
+            id: "choices",
+            name: "choices",
+            choices: formData.choices ?? [],
+            onChoiceChange: onChoiceChange,
+          }}
         />
         <FieldInput
-          id="order"
-          name="order"
-          variant="dropdown"
           label="Order"
-          choices={["Ascending", "Descending"]}
-          onChange={onChange}
+          variant={{
+            type: "dropdown",
+            id: "order",
+            name: "order",
+            choices: ["asc", "desc"],
+            // value: formData.order ?? "asc",
+            onChange: onChange,
+          }}
         />
 
         {/* TODO: This empty div is for first grid column spacing. Add aria label*/}

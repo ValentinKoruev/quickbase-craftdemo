@@ -2,111 +2,91 @@ import classNames from "classnames";
 import { Icon } from "@components/UI";
 
 import styles from "./FieldInput.module.scss";
+import {
+  FieldInputText,
+  FieldInputReadonly,
+  FieldInputCheckbox,
+  FieldInputDropdown,
+  FieldInputList,
+} from "./variants";
 
-// TODO: extract variants to individual components
-type FieldInputVariant =
-  | "text"
-  | "dropdown"
-  | "checkbox"
-  | "multi-select"
-  | "readonly"
-  | "list";
-
-interface IFieldInputProps {
+// TODO: Extract to types file, reuse in field input components
+type FieldVariantText = {
+  type: "text";
   name: string;
   id: string;
-  variant: FieldInputVariant;
-  label: string;
-  value?: string;
+  value: string;
   placeholder?: string;
-  choices?: string[];
-  required?: boolean;
   onChange?: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
-  onChoiceChange?: (newChoices: string[]) => void;
-}
+};
 
-const FieldInput: React.FC<IFieldInputProps> = ({
-  id,
-  name,
-  variant,
-  label,
-  placeholder,
-  value,
-  choices,
-  required,
-  onChange,
-  onChoiceChange,
-}) => {
-  const handleRemoveChoice = (index: number) => {
-    if (choices === undefined) return;
-    const newChoices = choices.filter((_, i) => i !== index);
-    onChoiceChange?.(newChoices);
+type FieldVariantDropdown = {
+  type: "dropdown";
+  name: string;
+  id: string;
+  choices: string[];
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+};
+
+type FieldVariantCheckbox = {
+  type: "checkbox";
+  name: string;
+  id: string;
+  checked: boolean;
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+};
+
+type FieldVariantReadOnly = {
+  type: "readonly";
+  value: string;
+};
+
+type FieldVariantList = {
+  type: "list";
+  name: string;
+  id: string;
+  choices: string[];
+  onChoiceChange: (newChoices: string[]) => void;
+};
+
+type FieldInputProps = {
+  label: string;
+  variant:
+    | FieldVariantText
+    | FieldVariantDropdown
+    | FieldVariantCheckbox
+    | FieldVariantReadOnly
+    | FieldVariantList;
+};
+
+const FieldInput: React.FC<FieldInputProps> = ({ variant, label }) => {
+  const renderFieldVariant = () => {
+    switch (variant.type) {
+      case "text":
+        return <FieldInputText {...variant} />;
+      case "readonly":
+        return <FieldInputReadonly {...variant} />;
+      case "dropdown":
+        return <FieldInputDropdown {...variant} />;
+      case "checkbox":
+        return <FieldInputCheckbox {...variant} />;
+      case "list":
+        return <FieldInputList {...variant} />;
+      default:
+        return null;
+    }
   };
+
   return (
     <div className={styles.FieldInputContainer}>
       <label className={styles.InputLabel}>{label}</label>
-      {variant === "text" && (
-        <input
-          id={id}
-          name={name}
-          type="text"
-          className={styles.FieldInput}
-          placeholder={placeholder ?? `Enter ${label}...`}
-          value={value}
-          onChange={onChange}
-        />
-      )}
-      {variant === "readonly" && (
-        <span className={styles.FieldReadOnly}>
-          {value ?? placeholder ?? `${label}`}
-        </span>
-      )}
-      {variant === "list" && (
-        <ul className={classNames(styles.FieldInput, styles.FieldList)}>
-          {choices?.map((choice, index) => (
-            <li key={`choice-${index}`}>
-              <span className={styles.ChoiceLabel}>{choice}</span>
-              <button
-                onClick={() => handleRemoveChoice(index)}
-                type="button"
-                className={styles.ChoiceRemoveButton}
-              >
-                <Icon name="x-mark" className={styles.ChoiceIcon} />
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-      {variant === "dropdown" && (
-        <select
-          id={id}
-          name={name}
-          onChange={onChange}
-          className={classNames(styles.FieldInput, styles.FieldSelect)}
-        >
-          {choices?.map((choice, index) => (
-            <option key={`choice-${index}`} value={choice}>
-              {choice}
-            </option>
-          ))}
-        </select>
-      )}
-      {variant === "checkbox" && (
-        <div className={styles.FieldCheckboxContainer}>
-          <input
-            id={id}
-            name={name}
-            type="checkbox"
-            className={styles.FieldCheckbox}
-            checked={required}
-            readOnly
-            onChange={onChange}
-          />
-          <span className={styles.CheckboxLabel}>A Value is required</span>
-        </div>
-      )}
+      {renderFieldVariant()}
     </div>
   );
 };
