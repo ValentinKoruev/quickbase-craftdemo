@@ -1,16 +1,9 @@
 import classNames from "classnames";
+import type { FieldVariantDropdown } from "@customTypes/fieldBuilder.types";
+
 import styles from "../../FieldInput.module.scss";
 
-interface IFieldInputDropdownProps {
-  name: string;
-  id: string;
-  choices: string[];
-  onChange?: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
-}
-
-const FieldInputDropdown: React.FC<IFieldInputDropdownProps> = ({
+const FieldInputDropdown: React.FC<FieldVariantDropdown> = ({
   id,
   name,
   onChange,

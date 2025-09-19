@@ -1,13 +1,8 @@
+import type { FieldVariantCheckbox } from "@customTypes/fieldBuilder.types";
+
 import styles from "../../FieldInput.module.scss";
 
-interface IFieldInputCheckboxProps {
-  name: string;
-  id: string;
-  checked: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-const FieldInputCheckbox: React.FC<IFieldInputCheckboxProps> = ({
+const FieldInputCheckbox: React.FC<FieldVariantCheckbox> = ({
   name,
   id,
   checked,

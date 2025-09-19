@@ -1,16 +1,10 @@
 import classNames from "classnames";
 import { Icon } from "@components/UI";
+import type { FieldVariantList } from "@customTypes/fieldBuilder.types";
 
 import styles from "../../FieldInput.module.scss";
 
-interface IFieldInputListProps {
-  name: string;
-  id: string;
-  choices: string[];
-  onChoiceChange: (newChoices: string[]) => void;
-}
-
-const FieldInputList: React.FC<IFieldInputListProps> = ({
+const FieldInputList: React.FC<FieldVariantList> = ({
   choices,
   onChoiceChange,
 }) => {

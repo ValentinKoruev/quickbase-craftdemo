@@ -1,7 +1,4 @@
-import classNames from "classnames";
-import { Icon } from "@components/UI";
-
-import styles from "./FieldInput.module.scss";
+import type { FieldVariant } from "@customTypes/fieldBuilder.types";
 import {
   FieldInputText,
   FieldInputReadonly,
@@ -10,59 +7,11 @@ import {
   FieldInputList,
 } from "./variants";
 
-// TODO: Extract to types file, reuse in field input components
-type FieldVariantText = {
-  type: "text";
-  name: string;
-  id: string;
-  value: string;
-  placeholder?: string;
-  onChange?: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
-};
-
-type FieldVariantDropdown = {
-  type: "dropdown";
-  name: string;
-  id: string;
-  choices: string[];
-  onChange?: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
-};
-
-type FieldVariantCheckbox = {
-  type: "checkbox";
-  name: string;
-  id: string;
-  checked: boolean;
-  onChange?: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
-};
-
-type FieldVariantReadOnly = {
-  type: "readonly";
-  value: string;
-};
-
-type FieldVariantList = {
-  type: "list";
-  name: string;
-  id: string;
-  choices: string[];
-  onChoiceChange: (newChoices: string[]) => void;
-};
+import styles from "./FieldInput.module.scss";
 
 type FieldInputProps = {
   label: string;
-  variant:
-    | FieldVariantText
-    | FieldVariantDropdown
-    | FieldVariantCheckbox
-    | FieldVariantReadOnly
-    | FieldVariantList;
+  variant: FieldVariant;
 };
 
 const FieldInput: React.FC<FieldInputProps> = ({ variant, label }) => {

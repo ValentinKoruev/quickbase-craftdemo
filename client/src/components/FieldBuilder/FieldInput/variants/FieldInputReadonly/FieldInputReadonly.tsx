@@ -1,10 +1,8 @@
+import type { FieldVariantReadOnly } from "@customTypes/fieldBuilder.types";
+
 import styles from "../../FieldInput.module.scss";
 
-interface IFieldInputReadonlyProps {
-  value: string;
-}
-
-const FieldInputReadonly: React.FC<IFieldInputReadonlyProps> = ({ value }) => {
+const FieldInputReadonly: React.FC<FieldVariantReadOnly> = ({ value }) => {
   return <span className={styles.FieldReadOnly}>{value}</span>;
 };
 

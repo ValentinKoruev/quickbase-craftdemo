@@ -1,14 +1,5 @@
+import type { FieldVariantText } from "@customTypes/fieldBuilder.types";
 import styles from "../../FieldInput.module.scss";
-
-interface IFieldInputTextProps {
-  name: string;
-  id: string;
-  value: string;
-  placeholder?: string;
-  onChange?: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
-}
 
 const FieldInputText = ({
   name,
@@ -16,7 +7,7 @@ const FieldInputText = ({
   value,
   placeholder = "",
   onChange,
-}: IFieldInputTextProps) => {
+}: FieldVariantText) => {
   return (
     <input
       id={id}
