@@ -48,3 +48,11 @@ export type FieldVariant =
   | FieldVariantCheckbox
   | FieldVariantReadOnly
   | FieldVariantList;
+
+export type FieldBuilderData = {
+  label: string;
+  type: string;
+  defaultValue?: string;
+  choices?: string[];
+  order?: "asc" | "desc";
+};

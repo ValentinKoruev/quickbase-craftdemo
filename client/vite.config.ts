@@ -8,7 +8,9 @@ export default defineConfig({
     alias: {
       "@styles": path.resolve(__dirname, "./src/styles"),
       "@components": path.resolve(__dirname, "./src/components"),
-      "@customTypes/*": path.resolve(__dirname, "./src/types"),
+      "@customTypes": path.resolve(__dirname, "./src/types"),
+      "@queries": path.resolve(__dirname, "./src/queries"),
+      "@config": path.resolve(__dirname, "./src/config"),
     },
   },
   plugins: [react()],

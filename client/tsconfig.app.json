@@ -25,7 +25,9 @@
     "baseUrl": ".",
     "paths": {
       "@components/*": ["src/components/*"],
-      "@customTypes/*": ["src/types/*"]
+      "@customTypes/*": ["src/types/*"],
+      "@queries/*": ["src/queries/*"],
+      "@config": ["src/config"]
     }
   },
   "include": ["src"]
