@@ -29,6 +29,7 @@ interface IButtonProps {
   color: ButtonColor;
   label: string;
 
+  type?: "button" | "submit" | "reset";
   inline?: boolean;
   className?: string;
   border?: ButtonBorder;
@@ -43,6 +44,7 @@ const Button: React.FC<IButtonProps> = ({
   className,
   border = "rounded",
   inline = false,
+  type = "button",
 }) => {
   return (
     <button
@@ -55,6 +57,7 @@ const Button: React.FC<IButtonProps> = ({
         { [styles.InlineButton]: inline }
       )}
       onClick={onClick}
+      type={type}
     >
       {label}
     </button>

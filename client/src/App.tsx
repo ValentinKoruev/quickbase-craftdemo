@@ -3,8 +3,8 @@ import FieldBuilder from "@components/FieldBuilder";
 import styles from "./App.module.scss";
 
 const testProps = {
-  fieldLabel: "Sales Region",
-  fieldType: "multi-select",
+  label: "Sales Region",
+  type: "multi-select",
   defaultValue: "Asia",
   choices: [
     "Asia",
