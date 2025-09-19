@@ -1,0 +1,141 @@
+@use "@styles/variables" as *;
+
+.BaseButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+
+  transition: background-color 0.1s, color 0.1s;
+
+  &:hover {
+    transition: background-color 0.2s, color 0.1s;
+  }
+
+  &.PrimaryVariant {
+    &.PrimaryColor {
+      background-color: $color-primary;
+      color: $color-foreground-primary;
+
+      &:hover {
+        background-color: darken($color-primary, 10%);
+      }
+    }
+    &.SecondaryColor {
+      background-color: $color-secondary;
+      color: $color-foreground-secondary;
+
+      &:hover {
+        background-color: darken($color-secondary, 10%);
+      }
+    }
+    &.SuccessColor {
+      background-color: $color-success;
+      color: $color-foreground-primary;
+
+      &:hover {
+        background-color: darken($color-success, 10%);
+      }
+    }
+    &.DangerColor {
+      background-color: $color-danger;
+      color: $color-foreground-primary;
+
+      &:hover {
+        background-color: darken($color-danger, 10%);
+      }
+    }
+  }
+
+  &.SecondaryVariant {
+    &.PrimaryColor {
+      background-color: transparent;
+      color: $color-primary;
+      border-color: $color-primary;
+
+      &:hover {
+        background-color: $color-primary;
+        color: $color-foreground-primary;
+      }
+    }
+    &.SecondaryColor {
+      background-color: transparent;
+      color: $color-foreground-secondary;
+      border-color: $color-secondary;
+
+      &:hover {
+        background-color: $color-secondary;
+        color: $color-foreground-secondary;
+      }
+    }
+    &.SuccessColor {
+      background-color: $color-foreground-primary;
+      color: $color-success;
+      border-color: $color-success;
+
+      &:hover {
+        background-color: $color-success;
+        color: $color-foreground-primary;
+      }
+    }
+    &.DangerColor {
+      background-color: $color-foreground-primary;
+      color: $color-danger;
+      border-color: $color-danger;
+
+      &:hover {
+        background-color: $color-danger;
+        color: $color-foreground-primary;
+      }
+    }
+  }
+
+  &.TextVariant {
+    &.PrimaryColor {
+      background-color: transparent;
+      color: $color-primary;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    &.SecondaryColor {
+      background-color: transparent;
+      color: $color-foreground-secondary;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    &.SuccessColor {
+      background-color: transparent;
+      color: $color-success;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    &.DangerColor {
+      background-color: transparent;
+      color: $color-danger;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &.BlockBorder {
+    border-radius: 0;
+  }
+  &.RoundedBorder {
+    border-radius: 6px;
+  }
+  &.RoundedFullBorder {
+    border-radius: 9999px;
+  }
+
+  &.InlineButton {
+    display: inline;
+  }
+}

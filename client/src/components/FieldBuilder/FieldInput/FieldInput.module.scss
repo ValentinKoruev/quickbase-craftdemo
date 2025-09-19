@@ -2,21 +2,63 @@
 
 .FieldInputContainer {
   display: contents;
-  align-items: center;
-  justify-content: center;
   gap: 10px;
 
   .InputLabel {
-    display: flex;
-    align-items: center;
+    padding: 0.5rem;
     font-size: $font-md;
   }
+
   .FieldInput {
-    width: 300px;
     padding: 0.5rem;
     border: 1px solid $neutral-300;
     border-radius: 6px;
     font-size: $font-sm;
     outline: none;
+    background-color: $neutral-100;
+  }
+
+  .FieldReadOnly {
+    display: inline-flex;
+    align-items: center;
+    font-size: $font-sm;
+  }
+
+  ul.FieldList {
+    width: 100%;
+    padding: 5px 0;
+    list-style: none;
+
+    li {
+      padding: 5px 10px;
+      font-size: $font-sm;
+
+      &:hover {
+        cursor: pointer;
+        background-color: $neutral-200;
+      }
+    }
+  }
+
+  .FieldSelect {
+    width: 100%;
+    height: 100%;
+  }
+
+  .FieldCheckboxContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    outline: none;
+
+    .FieldCheckbox {
+      width: 1rem;
+      height: 1rem;
+      accent-color: $color-primary;
+    }
+
+    .CheckboxLabel {
+      font-size: $font-sm;
+    }
   }
 }

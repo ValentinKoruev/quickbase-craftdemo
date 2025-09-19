@@ -1,5 +1,6 @@
 @use "@styles/variables" as *;
 
+$inputColumnWidth: 200px;
 $borderRadius: 8px;
 
 .FieldBuilder {
@@ -18,14 +19,24 @@ $borderRadius: 8px;
     .FieldBuilderTitle {
       font-weight: 600;
       color: $color-foreground-secondary;
+      font-size: $font-md;
     }
   }
 
   .FieldBuilderFormContainer {
-    padding: 10px;
+    display: grid;
+    grid-template-columns: 150px $inputColumnWidth;
+    gap: 20px;
+    padding: 20px;
     border: 1px solid $color-secondary;
     border-top: none;
     border-bottom-left-radius: $borderRadius;
     border-bottom-right-radius: $borderRadius;
+
+    .Actions {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+    }
   }
 }
