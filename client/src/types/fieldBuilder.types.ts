@@ -6,9 +6,16 @@ export type FieldVariantText = {
   id: string;
   value: string;
   placeholder?: string;
-  onChange?: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
+  maxLength?: number;
+  onChange: ({
+    name,
+    value,
+    type,
+  }: {
+    name: string;
+    value: string;
+    type: string;
+  }) => void;
 };
 
 export type FieldVariantDropdown = {

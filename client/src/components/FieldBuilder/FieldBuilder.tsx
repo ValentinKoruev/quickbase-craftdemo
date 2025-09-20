@@ -68,20 +68,34 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
       if (uniqueChoices.size !== formData.choices.length) {
         return "Choices must be unique.";
       }
+
+      for (const choice of formData.choices) {
+        if (choice.trim() === "") {
+          return "Choices cannot be empty.";
+        }
+        if (choice.length > 40) {
+          return "Choices cannot exceed 40 characters.";
+        }
+      }
     }
 
     return null;
   };
 
-  const onChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value, type } = e.target;
-
+  const onChange = ({
+    name,
+    value,
+    type: inputType,
+  }: {
+    name: string;
+    value: string;
+    type: string;
+  }) => {
+    console.log("onChange called with:", { name, value, inputType });
     setError(null);
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? !prev.required : value,
+      [name]: inputType === "checkbox" ? !prev.required : value,
     }));
   };
 
@@ -200,6 +214,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
             id: "defaultValue",
             name: "defaultValue",
             value: formData.defaultValue ?? "",
+            maxLength: 40,
             onChange: onChange,
           }}
         />

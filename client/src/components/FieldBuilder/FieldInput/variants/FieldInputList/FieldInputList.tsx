@@ -21,7 +21,19 @@ const FieldInputList: React.FC<FieldVariantList> = ({
       {choices &&
         orderBy(choices, sort).map((choice, index) => (
           <li key={`choice-${index}`}>
-            <span className={styles.ChoiceLabel}>{choice}</span>
+            {choice.trim().length > 40 ? (
+              <>
+                <span className={styles.ChoiceLabel}>
+                  {choice.slice(0, 40)}
+                  <span className={styles.DangerLabel}>
+                    {choice.slice(40, choice.length)}
+                  </span>
+                </span>
+              </>
+            ) : (
+              <span className={styles.ChoiceLabel}>{choice}</span>
+            )}
+            {/* <span className={styles.ChoiceLabel}>{choice}</span> */}
             <button
               onClick={() => handleRemoveChoice(index)}
               type="button"
