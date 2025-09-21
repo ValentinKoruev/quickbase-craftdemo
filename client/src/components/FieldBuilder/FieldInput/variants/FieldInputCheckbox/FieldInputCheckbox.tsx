@@ -17,7 +17,7 @@ const FieldInputCheckbox: React.FC<FieldVariantCheckbox> = ({
         className={styles.FieldCheckbox}
         checked={checked}
         readOnly
-        onChange={() => onChange({ name, value: !checked, type: "checkbox" })}
+        onChange={() => onChange({ name, value: !checked })}
       />
       <span className={styles.CheckboxLabel}>A Value is required</span>
     </div>

@@ -16,9 +16,7 @@ const FieldInputDropdown: React.FC<FieldVariantDropdown> = ({
       id={id}
       name={name}
       value={value}
-      onChange={(e) =>
-        onChange({ name, value: e.target.value, type: "dropdown" })
-      }
+      onChange={(e) => onChange({ name, value: e.target.value })}
       className={classNames(styles.FieldInput, styles.FieldSelect)}
     >
       {choices?.map((choice, index) => (

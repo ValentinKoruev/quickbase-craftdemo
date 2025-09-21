@@ -54,7 +54,6 @@ const FieldInputText = ({
     onChange({
       name,
       value: newValue,
-      type: "text",
     });
   };
 

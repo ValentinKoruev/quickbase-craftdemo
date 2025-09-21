@@ -7,15 +7,7 @@ export type FieldVariantText = {
   value: string;
   placeholder?: string;
   maxLength?: number;
-  onChange?: ({
-    name,
-    value,
-    type,
-  }: {
-    name: string;
-    value: string;
-    type: string;
-  }) => void;
+  onChange?: ({ name, value }: { name: string; value: string }) => void;
 };
 
 export type FieldVariantDropdown = {
@@ -24,15 +16,7 @@ export type FieldVariantDropdown = {
   id: string;
   value: string;
   choices?: string[];
-  onChange?: ({
-    name,
-    value,
-    type,
-  }: {
-    name: string;
-    value: string;
-    type: string;
-  }) => void;
+  onChange?: ({ name, value }: { name: string; value: string }) => void;
 };
 
 export type FieldVariantCheckbox = {
@@ -40,15 +24,7 @@ export type FieldVariantCheckbox = {
   name: string;
   id: string;
   value: boolean;
-  onChange?: ({
-    name,
-    value,
-    type,
-  }: {
-    name: string;
-    value: boolean;
-    type: string;
-  }) => void;
+  onChange?: ({ name, value }: { name: string; value: boolean }) => void;
 };
 
 export type FieldVariantReadOnly = {
@@ -63,15 +39,7 @@ export type FieldVariantList = {
   value: string[];
   maxLength?: number;
   sort?: "asc" | "desc";
-  onChange?: ({
-    name,
-    value,
-    type,
-  }: {
-    name: string;
-    value: string[];
-    type: string;
-  }) => void;
+  onChange?: ({ name, value }: { name: string; value: string[] }) => void;
 };
 
 export type FieldVariant =

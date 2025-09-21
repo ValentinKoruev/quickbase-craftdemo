@@ -14,7 +14,7 @@ const FieldInputList: React.FC<FieldVariantList> = ({
   const handleRemoveChoice = (index: number) => {
     if (choices === undefined) return;
     const newChoices = choices.filter((_, i) => i !== index);
-    onChange({ name: "choices", value: newChoices, type: "list" });
+    onChange({ name: "choices", value: newChoices });
   };
 
   return (

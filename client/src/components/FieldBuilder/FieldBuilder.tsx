@@ -109,13 +109,10 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
   const onChange = ({
     name,
     value,
-    type: inputType,
   }: {
     name: string;
     value: string | string[] | boolean;
-    type: string;
   }) => {
-    console.log("logged");
     setError(null);
     setFormData((prev) => ({
       ...prev,
