@@ -1,20 +1,34 @@
 @use "@styles/variables" as *;
+@use "@styles/mixins" as *;
 
-$inputColumnWidth: 600px;
+$inputColumnWidth: 400px;
 $borderRadius: 8px;
 
 .FieldBuilder {
-  width: fit-content;
-  min-width: 500px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100dvh;
   background-color: $neutral-100;
 
+  @include media($tablet) {
+    height: auto;
+    min-height: 0;
+    width: fit-content;
+    min-width: 500px;
+  }
+
   .FieldBuilderHeader {
-    padding: 10px;
+    padding: 20px;
     background-color: $color-secondary;
 
-    border: 1px solid $color-secondary;
-    border-top-left-radius: $borderRadius;
-    border-top-right-radius: $borderRadius;
+    @include media($tablet) {
+      padding: 10px;
+      border: 1px solid $color-secondary;
+      border-top-left-radius: $borderRadius;
+      border-top-right-radius: $borderRadius;
+    }
 
     .FieldBuilderTitle {
       font-weight: 600;
@@ -24,20 +38,36 @@ $borderRadius: 8px;
   }
 
   .FieldBuilderFormContainer {
-    display: grid;
-    grid-template-columns: 150px $inputColumnWidth;
-    gap: 20px;
-    padding: 20px;
-    border: 1px solid $color-secondary;
-    border-top: none;
-    border-bottom-left-radius: $borderRadius;
-    border-bottom-right-radius: $borderRadius;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 10px;
+    padding: 15px;
+
+    @include media($tablet) {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-columns: 150px $inputColumnWidth;
+      gap: 20px;
+      padding: 20px;
+
+      border: 1px solid $color-secondary;
+      border-top: none;
+      border-bottom-left-radius: $borderRadius;
+      border-bottom-right-radius: $borderRadius;
+    }
 
     .Actions {
       display: flex;
       flex-direction: row;
+      flex-grow: 1;
+      align-items: flex-end;
       justify-content: space-between;
-      min-height: 50px;
+
+      @include media($tablet) {
+        padding-bottom: 20px;
+      }
+
       .ModifiedActions {
         display: flex;
         flex-direction: row;
@@ -49,6 +79,14 @@ $borderRadius: 8px;
       color: $color-danger;
       font-size: $font-sm;
       font-weight: 600;
+    }
+
+    .GridWhitespace {
+      display: none;
+
+      @include media($tablet) {
+        display: block;
+      }
     }
   }
 }
