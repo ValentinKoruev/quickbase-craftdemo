@@ -15,12 +15,15 @@ $borderRadius: 8px;
   }
 
   .FieldBuilderHeader {
-    padding: 10px;
+    padding: 20px;
     background-color: $color-secondary;
 
-    border: 1px solid $color-secondary;
-    border-top-left-radius: $borderRadius;
-    border-top-right-radius: $borderRadius;
+    @include media($tablet) {
+      padding: 10px;
+      border: 1px solid $color-secondary;
+      border-top-left-radius: $borderRadius;
+      border-top-right-radius: $borderRadius;
+    }
 
     .FieldBuilderTitle {
       font-weight: 600;
@@ -34,15 +37,16 @@ $borderRadius: 8px;
     grid-template-columns: 1fr;
     gap: 10px;
     padding: 15px;
-    border: 1px solid $color-secondary;
-    border-top: none;
-    border-bottom-left-radius: $borderRadius;
-    border-bottom-right-radius: $borderRadius;
 
     @include media($tablet) {
       grid-template-columns: 150px $inputColumnWidth;
       gap: 20px;
       padding: 20px;
+
+      border: 1px solid $color-secondary;
+      border-top: none;
+      border-bottom-left-radius: $borderRadius;
+      border-bottom-right-radius: $borderRadius;
     }
 
     .Actions {
