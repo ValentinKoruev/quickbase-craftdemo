@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import VitePluginReactRemoveAttributes from "vite-plugin-react-remove-attributes";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -14,5 +15,8 @@ export default defineConfig({
       "@config": path.resolve(__dirname, "./src/config"),
     },
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    VitePluginReactRemoveAttributes({ attributes: ["data-testid"] }),
+  ],
 });

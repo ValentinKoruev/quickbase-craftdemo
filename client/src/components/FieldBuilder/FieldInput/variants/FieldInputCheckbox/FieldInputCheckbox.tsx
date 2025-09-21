@@ -9,7 +9,7 @@ const FieldInputCheckbox: React.FC<FieldVariantCheckbox> = ({
   onChange = () => {},
 }) => {
   return (
-    <div className={styles.FieldCheckboxContainer}>
+    <div data-testid="field-input" className={styles.FieldCheckboxContainer}>
       <input
         id={id}
         name={name}

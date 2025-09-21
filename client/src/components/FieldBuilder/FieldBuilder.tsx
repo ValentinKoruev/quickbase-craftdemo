@@ -96,6 +96,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
     value: string | string[] | boolean;
     type: string;
   }) => {
+    console.log("logged");
     setError(null);
     setFormData((prev) => ({
       ...prev,
