@@ -18,7 +18,10 @@ const FieldInputList: React.FC<FieldVariantList> = ({
   };
 
   return (
-    <ul className={classNames(styles.FieldInput, styles.FieldList)}>
+    <ul
+      data-testid="field-input"
+      className={classNames(styles.FieldInput, styles.FieldList)}
+    >
       {choices &&
         orderBy(choices, sort).map((choice, index) => (
           <li key={`choice-${index}`}>

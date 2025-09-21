@@ -74,6 +74,7 @@ const FieldInputText = ({
       role="textbox"
       onInput={handleInput}
       onFocus={onFocus}
+      data-testid="field-input"
     />
   );
 };

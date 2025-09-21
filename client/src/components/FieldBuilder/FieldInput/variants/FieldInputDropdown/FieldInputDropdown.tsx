@@ -12,6 +12,7 @@ const FieldInputDropdown: React.FC<FieldVariantDropdown> = ({
 }) => {
   return (
     <select
+      data-testid="field-input"
       id={id}
       name={name}
       value={value}

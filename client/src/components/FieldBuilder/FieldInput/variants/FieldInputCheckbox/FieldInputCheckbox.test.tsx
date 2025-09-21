@@ -1,0 +1,87 @@
+import { describe, it, expect, vi } from "vitest";
+import { render, fireEvent } from "@testing-library/react";
+import FieldInputCheckbox from "./FieldInputCheckbox";
+
+describe("FieldInputCheckbox Component", () => {
+  const defaultProps = {
+    name: "required",
+    id: "field-required",
+    value: false,
+    type: "checkbox" as const,
+  };
+
+  it("renders checkbox with correct attributes", () => {
+    const { container } = render(<FieldInputCheckbox {...defaultProps} />);
+    const checkbox = container.querySelector('input[type="checkbox"]');
+
+    expect(checkbox).toBeInTheDocument();
+    expect(checkbox).toHaveAttribute("name", "required");
+    expect(checkbox).toHaveAttribute("id", "field-required");
+    expect(checkbox).not.toBeChecked();
+  });
+
+  it("shows the checkbox label", () => {
+    const { getByText } = render(<FieldInputCheckbox {...defaultProps} />);
+
+    expect(getByText("A Value is required")).toBeInTheDocument();
+  });
+
+  it("renders checkbox as checked when value is true", () => {
+    const { container } = render(
+      <FieldInputCheckbox {...defaultProps} value={true} />
+    );
+    const checkbox = container.querySelector('input[type="checkbox"]');
+
+    expect(checkbox).toBeChecked();
+  });
+
+  it("calls onChange with toggled value when clicked", () => {
+    const mockOnChange = vi.fn();
+    const { container } = render(
+      <FieldInputCheckbox {...defaultProps} onChange={mockOnChange} />
+    );
+
+    const checkbox = container.querySelector('input[type="checkbox"]');
+
+    fireEvent.click(checkbox!);
+
+    expect(mockOnChange).toHaveBeenCalledWith({
+      name: "required",
+      value: true,
+      type: "checkbox",
+    });
+  });
+
+  it("toggles from true to false when clicked", () => {
+    const mockOnChange = vi.fn();
+    const { container } = render(
+      <FieldInputCheckbox
+        {...defaultProps}
+        value={true}
+        onChange={mockOnChange}
+      />
+    );
+
+    const checkbox = container.querySelector('input[type="checkbox"]');
+
+    fireEvent.click(checkbox!);
+
+    expect(mockOnChange).toHaveBeenCalledWith({
+      name: "required",
+      value: false,
+      type: "checkbox",
+    });
+  });
+
+  it("has appropriate CSS classes", () => {
+    const { container } = render(<FieldInputCheckbox {...defaultProps} />);
+
+    const checkboxContainer = container.firstChild;
+    const checkbox = container.querySelector('input[type="checkbox"]');
+    const label = container.querySelector("span");
+
+    expect(checkboxContainer).toHaveClass("FieldCheckboxContainer");
+    expect(checkbox).toHaveClass("FieldCheckbox");
+    expect(label).toHaveClass("CheckboxLabel");
+  });
+});
