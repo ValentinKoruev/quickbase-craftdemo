@@ -5,11 +5,16 @@ $inputColumnWidth: 400px;
 $borderRadius: 8px;
 
 .FieldBuilder {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 100%;
+  min-height: 100dvh;
   background-color: $neutral-100;
 
   @include media($tablet) {
+    height: auto;
+    min-height: 0;
     width: fit-content;
     min-width: 500px;
   }
@@ -33,12 +38,15 @@ $borderRadius: 8px;
   }
 
   .FieldBuilderFormContainer {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
     gap: 10px;
     padding: 15px;
 
     @include media($tablet) {
+      display: grid;
+      grid-template-columns: 1fr;
       grid-template-columns: 150px $inputColumnWidth;
       gap: 20px;
       padding: 20px;
@@ -52,8 +60,14 @@ $borderRadius: 8px;
     .Actions {
       display: flex;
       flex-direction: row;
+      flex-grow: 1;
+      align-items: flex-end;
       justify-content: space-between;
-      min-height: 50px;
+
+      @include media($tablet) {
+        padding-bottom: 20px;
+      }
+
       .ModifiedActions {
         display: flex;
         flex-direction: row;
@@ -65,6 +79,14 @@ $borderRadius: 8px;
       color: $color-danger;
       font-size: $font-sm;
       font-weight: 600;
+    }
+
+    .GridWhitespace {
+      display: none;
+
+      @include media($tablet) {
+        display: block;
+      }
     }
   }
 }

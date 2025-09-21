@@ -182,10 +182,10 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
             />
           );
         })}
-        <div></div>
+        {/* The empty divs are for grid column spacing.*/}
+        <div className={styles.GridWhitespace} aria-hidden="true"></div>
         <div>{error && <span className={styles.Error}>{error}</span>}</div>
-        {/* TODO: This empty div is for first grid column spacing. Add aria label*/}
-        <div></div>
+        <div className={styles.GridWhitespace} aria-hidden="true"></div>
         <div className={styles.Actions}>
           <Button
             onClick={onClear}
