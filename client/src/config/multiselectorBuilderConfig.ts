@@ -105,6 +105,7 @@ export const multiselectorBuilderConfig: (
           name: "choices",
           value: fieldData.choices ?? [],
           sort: fieldData.order,
+          maxLength: 40,
         },
         validation: (value: FieldValue) => {
           if (value && !Array.isArray(value)) {

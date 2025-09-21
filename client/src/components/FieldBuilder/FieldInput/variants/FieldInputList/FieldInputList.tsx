@@ -8,6 +8,7 @@ import styles from "../../FieldInput.module.scss";
 const FieldInputList: React.FC<FieldVariantList> = ({
   value: choices,
   sort = "asc",
+  maxLength = 1000,
   onChange = () => {},
 }) => {
   const handleRemoveChoice = (index: number) => {
@@ -21,12 +22,12 @@ const FieldInputList: React.FC<FieldVariantList> = ({
       {choices &&
         orderBy(choices, sort).map((choice, index) => (
           <li key={`choice-${index}`}>
-            {choice.trim().length > 40 ? (
+            {choice.trim().length > maxLength ? (
               <>
                 <span className={styles.ChoiceLabel}>
-                  {choice.slice(0, 40)}
+                  {choice.slice(0, maxLength)}
                   <span className={styles.DangerLabel}>
-                    {choice.slice(40, choice.length)}
+                    {choice.slice(maxLength, choice.length)}
                   </span>
                 </span>
               </>

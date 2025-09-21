@@ -61,6 +61,8 @@ export type FieldVariantList = {
   name: string;
   id: string;
   value: string[];
+  maxLength?: number;
+  sort?: "asc" | "desc";
   onChange?: ({
     name,
     value,
@@ -70,7 +72,6 @@ export type FieldVariantList = {
     value: string[];
     type: string;
   }) => void;
-  sort?: "asc" | "desc";
 };
 
 export type FieldVariant =
