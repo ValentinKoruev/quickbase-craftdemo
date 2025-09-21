@@ -6,14 +6,18 @@ import styles from "../../FieldInput.module.scss";
 const FieldInputDropdown: React.FC<FieldVariantDropdown> = ({
   id,
   name,
-  onChange,
+  value,
   choices,
+  onChange = () => {},
 }) => {
   return (
     <select
       id={id}
       name={name}
-      onChange={onChange}
+      value={value}
+      onChange={(e) =>
+        onChange({ name, value: e.target.value, type: "dropdown" })
+      }
       className={classNames(styles.FieldInput, styles.FieldSelect)}
     >
       {choices?.map((choice, index) => (

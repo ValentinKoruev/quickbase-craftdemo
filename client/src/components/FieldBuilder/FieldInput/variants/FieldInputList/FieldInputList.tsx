@@ -6,14 +6,15 @@ import type { FieldVariantList } from "@customTypes/fieldBuilder.types";
 import styles from "../../FieldInput.module.scss";
 
 const FieldInputList: React.FC<FieldVariantList> = ({
-  choices,
+  value: choices,
   sort = "asc",
-  onChoiceChange,
+  maxLength = 1000,
+  onChange = () => {},
 }) => {
   const handleRemoveChoice = (index: number) => {
     if (choices === undefined) return;
     const newChoices = choices.filter((_, i) => i !== index);
-    onChoiceChange(newChoices);
+    onChange({ name: "choices", value: newChoices, type: "list" });
   };
 
   return (
@@ -21,7 +22,19 @@ const FieldInputList: React.FC<FieldVariantList> = ({
       {choices &&
         orderBy(choices, sort).map((choice, index) => (
           <li key={`choice-${index}`}>
-            <span className={styles.ChoiceLabel}>{choice}</span>
+            {choice.trim().length > maxLength ? (
+              <>
+                <span className={styles.ChoiceLabel}>
+                  {choice.slice(0, maxLength)}
+                  <span className={styles.DangerLabel}>
+                    {choice.slice(maxLength, choice.length)}
+                  </span>
+                </span>
+              </>
+            ) : (
+              <span className={styles.ChoiceLabel}>{choice}</span>
+            )}
+            {/* <span className={styles.ChoiceLabel}>{choice}</span> */}
             <button
               onClick={() => handleRemoveChoice(index)}
               type="button"

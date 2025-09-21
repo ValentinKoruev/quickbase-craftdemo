@@ -1,5 +1,9 @@
 @use "@styles/variables" as *;
 
+.DangerLabel {
+  color: $color-danger;
+}
+
 .FieldInputContainer {
   display: contents;
   gap: 10px;
