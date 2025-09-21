@@ -1,12 +1,18 @@
 @use "@styles/variables" as *;
+@use "@styles/mixins" as *;
 
-$inputColumnWidth: 600px;
+$inputColumnWidth: 400px;
 $borderRadius: 8px;
 
 .FieldBuilder {
-  width: fit-content;
-  min-width: 500px;
+  width: 100%;
+  max-width: 100%;
   background-color: $neutral-100;
+
+  @include media($tablet) {
+    width: fit-content;
+    min-width: 500px;
+  }
 
   .FieldBuilderHeader {
     padding: 10px;
@@ -25,13 +31,19 @@ $borderRadius: 8px;
 
   .FieldBuilderFormContainer {
     display: grid;
-    grid-template-columns: 150px $inputColumnWidth;
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 15px;
     border: 1px solid $color-secondary;
     border-top: none;
     border-bottom-left-radius: $borderRadius;
     border-bottom-right-radius: $borderRadius;
+
+    @include media($tablet) {
+      grid-template-columns: 150px $inputColumnWidth;
+      gap: 20px;
+      padding: 20px;
+    }
 
     .Actions {
       display: flex;
