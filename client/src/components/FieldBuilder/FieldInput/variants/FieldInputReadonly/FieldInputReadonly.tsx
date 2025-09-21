@@ -2,10 +2,13 @@ import type { FieldVariantReadOnly } from "@customTypes/fieldBuilder.types";
 
 import styles from "../../FieldInput.module.scss";
 
-const FieldInputReadonly: React.FC<FieldVariantReadOnly> = ({ value }) => {
+const FieldInputReadonly: React.FC<FieldVariantReadOnly> = ({
+  value,
+  format = (val) => val,
+}) => {
   return (
     <span data-testid="field-input" className={styles.FieldReadOnly}>
-      {value}
+      {format(value)}
     </span>
   );
 };

@@ -72,17 +72,21 @@ export const multiselectorBuilderConfig: (
         variant: {
           type: "readonly",
           value: fieldData.type,
+          format: (val) => {
+            if (val === "multiselect") return "Multi-Select";
+            return val.charAt(0).toUpperCase() + val.slice(1);
+          },
         },
       },
       {
         label: "Required",
         name: "required",
-        initialValue: fieldData.required,
         variant: {
           type: "checkbox",
           id: "required",
           name: "required",
           value: fieldData.required ?? false,
+          tooltip: "A Value is required",
         },
       },
       {
@@ -94,6 +98,15 @@ export const multiselectorBuilderConfig: (
           name: "defaultValue",
           value: fieldData.default ?? "",
           maxLength: 40,
+        },
+        validation: (value: FieldValue) => {
+          if (!value || (typeof value === "string" && value.trim() === "")) {
+            return "Default value is cannot be empty.";
+          }
+          if (value && (value as string).length > 40) {
+            return "Default value must be 40 characters or less.";
+          }
+          return null;
         },
       },
       {
@@ -143,6 +156,11 @@ export const multiselectorBuilderConfig: (
           name: "order",
           value: fieldData.order ?? "asc",
           choices: ["asc", "desc"],
+          format: (val) => {
+            if (val === "asc") return "Ascending (A-Z)";
+            if (val === "desc") return "Descending (Z-A)";
+            return val;
+          },
         },
       },
     ],

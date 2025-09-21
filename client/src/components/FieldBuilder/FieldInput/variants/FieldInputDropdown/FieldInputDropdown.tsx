@@ -8,6 +8,7 @@ const FieldInputDropdown: React.FC<FieldVariantDropdown> = ({
   name,
   value,
   choices,
+  format = (val) => val,
   onChange = () => {},
 }) => {
   return (
@@ -21,7 +22,7 @@ const FieldInputDropdown: React.FC<FieldVariantDropdown> = ({
     >
       {choices?.map((choice, index) => (
         <option key={`choice-${index}`} value={choice}>
-          {choice}
+          {format(choice)}
         </option>
       ))}
     </select>

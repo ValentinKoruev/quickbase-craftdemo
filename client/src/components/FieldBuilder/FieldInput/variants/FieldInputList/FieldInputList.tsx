@@ -7,6 +7,7 @@ import styles from "../../FieldInput.module.scss";
 
 const FieldInputList: React.FC<FieldVariantList> = ({
   value: choices,
+  name,
   sort = "asc",
   maxLength = 1000,
   onChange = () => {},
@@ -14,7 +15,7 @@ const FieldInputList: React.FC<FieldVariantList> = ({
   const handleRemoveChoice = (index: number) => {
     if (choices === undefined) return;
     const newChoices = choices.filter((_, i) => i !== index);
-    onChange({ name: "choices", value: newChoices });
+    onChange({ name, value: newChoices });
   };
 
   return (
@@ -37,7 +38,6 @@ const FieldInputList: React.FC<FieldVariantList> = ({
             ) : (
               <span className={styles.ChoiceLabel}>{choice}</span>
             )}
-            {/* <span className={styles.ChoiceLabel}>{choice}</span> */}
             <button
               onClick={() => handleRemoveChoice(index)}
               type="button"

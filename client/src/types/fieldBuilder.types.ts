@@ -16,6 +16,7 @@ export type FieldVariantDropdown = {
   id: string;
   value: string;
   choices?: string[];
+  format?: (value: string) => string;
   onChange?: ({ name, value }: { name: string; value: string }) => void;
 };
 
@@ -24,12 +25,14 @@ export type FieldVariantCheckbox = {
   name: string;
   id: string;
   value: boolean;
+  tooltip?: string;
   onChange?: ({ name, value }: { name: string; value: boolean }) => void;
 };
 
 export type FieldVariantReadOnly = {
   type: "readonly";
   value: string;
+  format?: (value: string) => string;
 };
 
 export type FieldVariantList = {

@@ -6,6 +6,7 @@ const FieldInputCheckbox: React.FC<FieldVariantCheckbox> = ({
   name,
   id,
   value: checked,
+  tooltip,
   onChange = () => {},
 }) => {
   return (
@@ -19,7 +20,11 @@ const FieldInputCheckbox: React.FC<FieldVariantCheckbox> = ({
         readOnly
         onChange={() => onChange({ name, value: !checked })}
       />
-      <span className={styles.CheckboxLabel}>A Value is required</span>
+      {tooltip && (
+        <label htmlFor={id} className={styles.FieldCheckboxLabel}>
+          {tooltip}
+        </label>
+      )}
     </div>
   );
 };
