@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { AxiosResponse } from "axios";
+import { useMutation } from "@tanstack/react-query";
 import type {
   FieldValue,
   IFieldBuilderInput,
@@ -46,6 +47,24 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
 
   const [isFormModified, setIsFormModified] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const saveMutation = useMutation({
+    mutationFn: (fieldData: Record<string, FieldValue>) => saveQuery(fieldData),
+    onSuccess: (res) => {
+      // TODO: fix whatever this is
+      const data = { ...res.data.data, defaultValue: res.data.data.default };
+
+      console.log("Field saved successfully:", data);
+
+      setFormData(() => ({ ...data }));
+      initialProps.current = { ...data };
+      setIsFormModified(false);
+      setError(null);
+    },
+    onError: () => {
+      setError("An error occurred while saving the field.");
+    },
+  });
 
   useEffect(() => {
     const initialState = initialProps.current;
@@ -120,23 +139,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
       return;
     }
 
-    try {
-      const res = await saveQuery(currentFormData);
-      console.log(res);
-      // TODO: fix whatever this is
-      const data = { ...res.data.data, defaultValue: res.data.data.default };
-
-      console.log("Client saved data:", currentFormData);
-
-      console.log("Field saved successfully:", data);
-
-      setFormData(() => ({ ...data }));
-      initialProps.current = { ...data };
-      setIsFormModified(false);
-      setError(null);
-    } catch (err) {
-      setError("An error occurred while saving the field.");
-    }
+    saveMutation.mutate(currentFormData);
   };
 
   const onCancel = () => {
@@ -206,6 +209,10 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
                 border="rounded"
                 label="Save changes"
                 type="submit"
+                loader={{
+                  isLoading: saveMutation.isPending,
+                  applyStyles: true,
+                }}
               />
 
               <Button
@@ -215,6 +222,9 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
                 color="danger"
                 label="Cancel"
                 type="button"
+                loader={{
+                  isLoading: saveMutation.isPending,
+                }}
               />
             </div>
           )}

@@ -117,4 +117,61 @@ describe("Button Component", () => {
     const button = container.querySelector("button");
     expect(button).toHaveClass("testClass");
   });
+
+  it("applies loading classes correctly", () => {
+    const { container, rerender } = render(
+      <Button
+        variant="primary"
+        color="primary"
+        label="Not Loading Button"
+        loader={{ isLoading: false }}
+      />
+    );
+
+    const button = container.querySelector("button");
+    expect(button).not.toHaveClass("Loading");
+
+    rerender(
+      <Button
+        variant="primary"
+        color="primary"
+        label="Loading Button"
+        loader={{ isLoading: true, applyStyles: true }}
+      />
+    );
+  });
+
+  it("disables button when isLoading is true", () => {
+    const { container } = render(
+      <Button
+        variant="primary"
+        color="primary"
+        label="Loading Button"
+        loader={{ isLoading: true }}
+      />
+    );
+
+    const button = container.querySelector("button");
+    expect(button).toBeDisabled();
+  });
+
+  it("does not call onClick handler when clicked if isLoading is true", async () => {
+    const user = userEvent.setup();
+    const handleClick = vi.fn();
+
+    const { getByRole } = render(
+      <Button
+        variant="primary"
+        color="primary"
+        label="Loading Button"
+        onClick={handleClick}
+        loader={{ isLoading: true }}
+      />
+    );
+
+    const button = getByRole("button");
+    await user.click(button);
+
+    expect(handleClick).not.toHaveBeenCalled();
+  });
 });

@@ -45,7 +45,7 @@ app.get("/api/field", (req, res) => {
 app.post("/api/field", async (req, res) => {
   console.log("Received field data:", req.body);
 
-  //   await sleep(1000);
+  await sleep(1000);
 
   res.json({ status: "success", data: req.body });
 });

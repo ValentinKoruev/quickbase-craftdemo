@@ -33,6 +33,7 @@ export interface IButtonProps {
   inline?: boolean;
   className?: string;
   border?: ButtonBorder;
+  loader?: { isLoading: boolean; applyStyles?: boolean };
   onClick?: () => void;
 }
 
@@ -45,7 +46,9 @@ const Button: React.FC<IButtonProps> = ({
   border = "rounded",
   inline = false,
   type = "button",
+  loader = { isLoading: false, applyStyles: false },
 }) => {
+  console.log(loader);
   return (
     <button
       className={classNames(
@@ -54,12 +57,16 @@ const Button: React.FC<IButtonProps> = ({
         variantMap[variant],
         colorMap[color],
         borderMap[border],
-        { [styles.InlineButton]: inline }
+        {
+          [styles.InlineButton]: inline,
+          [styles.Loading]: loader.isLoading && loader.applyStyles,
+        }
       )}
       onClick={onClick}
       type={type}
+      disabled={loader.isLoading}
     >
-      {label}
+      <span>{label}</span>
     </button>
   );
 };

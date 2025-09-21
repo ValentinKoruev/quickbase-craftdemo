@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, fireEvent } from "@testing-library/react";
 import FieldBuilder from "./FieldBuilder";
 import type { IFieldBuilderProps } from "./FieldBuilder";
@@ -65,6 +66,26 @@ vi.mock("@components/UI", () => ({
 }));
 
 describe("FieldBuilder Component", () => {
+  let queryClient: QueryClient;
+
+  beforeEach(() => {
+    queryClient = new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+        },
+        mutations: {
+          retry: false,
+        },
+      },
+    });
+  });
+
+  const renderWithQueryClient = (ui: React.ReactElement) => {
+    return render(
+      <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
+    );
+  };
   const mockSaveQuery = vi.fn().mockResolvedValue({
     data: {
       data: {
@@ -122,12 +143,16 @@ describe("FieldBuilder Component", () => {
   });
 
   it("renders the field builder with correct title", () => {
-    const { getByText } = render(<FieldBuilder {...defaultProps} />);
+    const { getByText } = renderWithQueryClient(
+      <FieldBuilder {...defaultProps} />
+    );
     expect(getByText("Field Builder")).toBeInTheDocument();
   });
 
   it("renders all provided fields with correct props", () => {
-    const { getAllByTestId } = render(<FieldBuilder {...defaultProps} />);
+    const { getAllByTestId } = renderWithQueryClient(
+      <FieldBuilder {...defaultProps} />
+    );
     const fieldInputs = getAllByTestId("field-input");
 
     expect(fieldInputs.length).toBe(3);
@@ -146,19 +171,25 @@ describe("FieldBuilder Component", () => {
   });
 
   it("renders the clear button", () => {
-    const { getByTestId } = render(<FieldBuilder {...defaultProps} />);
+    const { getByTestId } = renderWithQueryClient(
+      <FieldBuilder {...defaultProps} />
+    );
     expect(getByTestId("button-clear")).toBeInTheDocument();
   });
 
   it("passes onChange handler to non-readonly/button field variants", () => {
-    const { getAllByTestId } = render(<FieldBuilder {...defaultProps} />);
+    const { getAllByTestId } = renderWithQueryClient(
+      <FieldBuilder {...defaultProps} />
+    );
     const changeButtons = getAllByTestId("mock-field-input-change");
 
     expect(changeButtons.length).toBe(3);
   });
 
   it("provides onChange handler to field inputs", () => {
-    const { getAllByTestId } = render(<FieldBuilder {...defaultProps} />);
+    const { getAllByTestId } = renderWithQueryClient(
+      <FieldBuilder {...defaultProps} />
+    );
 
     const changeButtons = getAllByTestId("mock-field-input-change");
     expect(changeButtons.length).toBe(3);
@@ -166,21 +197,33 @@ describe("FieldBuilder Component", () => {
     changeButtons[0].click();
   });
 
-  it("calls saveQuery with form data when submitted", () => {
-    const { container } = render(<FieldBuilder {...defaultProps} />);
+  it("calls saveQuery with form data when submitted", async () => {
+    mockSaveQuery.mockClear();
 
-    const form = container.querySelector(
-      `.${styles.FieldBuilderFormContainer}`
+    const { getAllByTestId, getByTestId } = renderWithQueryClient(
+      <FieldBuilder {...defaultProps} />
     );
-    expect(form).toBeInTheDocument();
+    const changeButtons = getAllByTestId("mock-field-input-change");
+    fireEvent.click(changeButtons[0]);
 
-    fireEvent.submit(form!);
+    const saveButton = getByTestId("button-save-changes");
+    expect(saveButton).toBeInTheDocument();
 
-    expect(mockSaveQuery).toHaveBeenCalled();
+    fireEvent.click(saveButton);
+
+    await new Promise(process.nextTick);
+
+    expect(mockSaveQuery).toHaveBeenCalledWith(
+      expect.objectContaining({
+        label: "changed value",
+      })
+    );
   });
 
   it("clears the form when clear button is clicked", () => {
-    const { getByTestId } = render(<FieldBuilder {...defaultProps} />);
+    const { getByTestId } = renderWithQueryClient(
+      <FieldBuilder {...defaultProps} />
+    );
 
     const clearButton = getByTestId("button-clear");
     clearButton.click();
@@ -194,7 +237,9 @@ describe("FieldBuilder Component", () => {
       beforeSaveFormat: mockBeforeSaveFormat,
     };
 
-    const { container } = render(<FieldBuilder {...propsWithFormatter} />);
+    const { container } = renderWithQueryClient(
+      <FieldBuilder {...propsWithFormatter} />
+    );
 
     const form = container.querySelector(
       `.${styles.FieldBuilderFormContainer}`
