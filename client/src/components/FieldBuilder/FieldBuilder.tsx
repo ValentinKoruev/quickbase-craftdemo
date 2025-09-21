@@ -125,7 +125,6 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
 
     let currentFormData = formData;
     if (beforeSaveFormat) {
-      console.log("test");
       currentFormData = beforeSaveFormat(formData);
     }
 

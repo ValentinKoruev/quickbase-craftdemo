@@ -48,7 +48,6 @@ const Button: React.FC<IButtonProps> = ({
   type = "button",
   loader = { isLoading: false, applyStyles: false },
 }) => {
-  console.log(loader);
   return (
     <button
       className={classNames(
