@@ -1,85 +1,90 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import apiQueries from "@queries/api";
+import type { AxiosResponse } from "axios";
+import type {
+  FieldValue,
+  IFieldBuilderInput,
+} from "@customTypes/fieldBuilder.types";
 import FieldInput from "@components/FieldBuilder/FieldInput";
 import { Button } from "@components/UI";
 
 import styles from "./FieldBuilder.module.scss";
 
-interface IFieldBuilderProps {
-  label?: string;
-  type?: string;
-  required?: boolean;
-  defaultValue?: string;
-  choices?: string[];
-  order?: "asc" | "desc";
+export interface IFieldBuilderProps {
+  fields: IFieldBuilderInput[];
+  saveQuery: (
+    fieldData: Record<string, FieldValue>
+  ) => Promise<AxiosResponse<any, any>>;
+  beforeSaveFormat?: (
+    values: Record<string, FieldValue>
+  ) => Record<string, FieldValue>;
 }
 
 const FieldBuilder: React.FC<IFieldBuilderProps> = ({
-  label,
-  type,
-  defaultValue,
-  choices,
-  order,
-  required,
+  fields = [],
+  saveQuery,
+  beforeSaveFormat,
 }) => {
-  const initialProps = useRef({
-    label: label || "",
-    type: type || "multi-select",
-    required: required || false,
-    defaultValue: defaultValue || "",
-    choices: choices || [],
-    order: order ?? "asc",
-  });
+  const initialProps = useRef<Record<string, FieldValue>>(
+    fields.reduce(
+      (acc, field) => ({
+        ...acc,
+        [field.name]: field.variant.value ?? "",
+      }),
+      {}
+    )
+  );
 
-  const [formData, setFormData] = useState<IFieldBuilderProps>({
-    label: label || "",
-    type: type || "multi-select",
-    required: required || false,
-    defaultValue: defaultValue || "",
-    choices: choices || [],
-    order: order ?? "asc",
-  });
+  const [formData, setFormData] = useState<Record<string, FieldValue>>(
+    fields.reduce(
+      (acc, field) => ({
+        ...acc,
+        [field.name]: field.variant.value ?? "",
+      }),
+      {}
+    )
+  );
 
   const [isFormModified, setIsFormModified] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const initialState = initialProps.current;
-    const isDifferent =
-      formData.label !== initialState.label ||
-      formData.type !== initialState.type ||
-      formData.required !== initialState.required ||
-      formData.defaultValue !== initialState.defaultValue ||
-      formData.order !== initialState.order ||
-      JSON.stringify(formData.choices) !== JSON.stringify(initialState.choices);
 
-    setIsFormModified(isDifferent);
+    for (const key of Object.keys(formData)) {
+      if (
+        typeof formData[key] === "object" &&
+        typeof initialState[key] === "object"
+      ) {
+        if (
+          JSON.stringify(formData[key]) !== JSON.stringify(initialState[key])
+        ) {
+          setIsFormModified(true);
+          return;
+        }
+        continue;
+      }
+
+      if (String(formData[key]).trim() !== String(initialState[key]).trim()) {
+        setIsFormModified(true);
+        return;
+      }
+    }
+
+    setIsFormModified(false);
   }, [formData]);
 
-  const validateForm = (formData: IFieldBuilderProps): string | null => {
-    if (!formData.label || formData.label.trim() === "") {
-      return "Label is required.";
-    }
-    if (formData.choices && formData.choices.length > 50) {
-      return "Too many choices. Maximum allowed is 50.";
-    }
-    if (formData.choices) {
-      const uniqueChoices = new Set(formData.choices);
-      if (uniqueChoices.size !== formData.choices.length) {
-        return "Choices must be unique.";
-      }
-
-      for (const choice of formData.choices) {
-        if (choice.trim() === "") {
-          return "Choices cannot be empty.";
-        }
-        if (choice.length > 40) {
-          return "Choices cannot exceed 40 characters.";
-        }
+  const validateForm = (
+    formData: Record<string, FieldValue>
+  ): string[] | null => {
+    const errors: string[] = [];
+    for (const field of fields) {
+      if (field.validation) {
+        const error = field.validation(formData[field.name]);
+        if (error) errors.push(error);
       }
     }
 
-    return null;
+    return errors.length > 0 ? errors : null;
   };
 
   const onChange = ({
@@ -88,56 +93,35 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
     type: inputType,
   }: {
     name: string;
-    value: string;
+    value: string | string[] | boolean;
     type: string;
   }) => {
-    console.log("onChange called with:", { name, value, inputType });
     setError(null);
     setFormData((prev) => ({
       ...prev,
-      [name]: inputType === "checkbox" ? !prev.required : value,
-    }));
-  };
-
-  const onChoiceChange = (newChoices: string[]) => {
-    setError(null);
-    setFormData((prev) => ({
-      ...prev,
-      choices: newChoices,
+      [name]: value,
     }));
   };
 
   const onSaveChange = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let currentFormData = { ...formData };
-    if (
-      formData.defaultValue &&
-      !formData.choices?.includes(formData.defaultValue)
-    ) {
-      currentFormData = {
-        ...formData,
-        choices: [...(formData.choices || []), formData.defaultValue],
-      };
+    let currentFormData = formData;
+    if (beforeSaveFormat) {
+      console.log("test");
+      currentFormData = beforeSaveFormat(formData);
     }
 
     const validationError = validateForm(currentFormData);
 
     if (validationError) {
-      setError(validationError);
+      setError(validationError[0]);
       return;
     }
 
     try {
-      const res = await apiQueries.fieldQueries.saveField({
-        //? we can use ! since the validation ensures label and type are present
-        label: currentFormData.label!,
-        type: currentFormData.type!,
-        required: currentFormData.required ?? false,
-        default: currentFormData.defaultValue,
-        choices: currentFormData.choices,
-        order: currentFormData.order,
-      });
+      const res = await saveQuery(currentFormData);
+      console.log(res);
       // TODO: fix whatever this is
       const data = { ...res.data.data, defaultValue: res.data.data.default };
 
@@ -180,88 +164,40 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
         className={styles.FieldBuilderFormContainer}
         onSubmit={onSaveChange}
       >
-        <FieldInput
-          label="Label"
-          variant={{
-            type: "text",
-            name: "label",
-            id: "label",
-            value: formData.label ?? "",
-            onChange: onChange,
-          }}
-        />
-        <FieldInput
-          label="Type"
-          variant={{
-            type: "readonly",
-            value: formData.type ?? "",
-          }}
-        />
-        <FieldInput
-          label="Required"
-          variant={{
-            type: "checkbox",
-            id: "required",
-            name: "required",
-            checked: formData.required ?? false,
-            onChange: onChange,
-          }}
-        />
-        <FieldInput
-          label="Default Value"
-          variant={{
-            type: "text",
-            id: "defaultValue",
-            name: "defaultValue",
-            value: formData.defaultValue ?? "",
-            maxLength: 40,
-            onChange: onChange,
-          }}
-        />
-        <FieldInput
-          label="Choices"
-          variant={{
-            type: "list",
-            id: "choices",
-            name: "choices",
-            choices: formData.choices ?? [],
-            sort: formData.order,
-            onChoiceChange: onChoiceChange,
-          }}
-        />
-        <FieldInput
-          label="Order"
-          variant={{
-            type: "dropdown",
-            id: "order",
-            name: "order",
-            choices: ["asc", "desc"],
-            // value: formData.order ?? "asc",
-            onChange: onChange,
-          }}
-        />
-        <FieldInput
-          label="Form Options"
-          variant={{
-            type: "button",
-            button: {
-              inline: true,
-              variant: "primary",
-              color: "danger",
-              label: "Clear",
-              border: "rounded",
-              onClick: onClear,
-              type: "button",
-            },
-          }}
-        />
+        {fields.map((field) => {
+          return (
+            <FieldInput
+              key={field.name}
+              label={field.label}
+              variant={
+                field.variant.type === "readonly" ||
+                field.variant.type === "button"
+                  ? { ...field.variant, value: formData[field.name] as any }
+                  : {
+                      ...field.variant,
+                      value: formData[field.name] as any,
+                      onChange,
+                    }
+              }
+            />
+          );
+        })}
         <div></div>
         <div>{error && <span className={styles.Error}>{error}</span>}</div>
         {/* TODO: This empty div is for first grid column spacing. Add aria label*/}
         <div></div>
         <div className={styles.Actions}>
+          <Button
+            onClick={onClear}
+            inline
+            variant="secondary"
+            color="danger"
+            label="Clear"
+            type="button"
+          />
+
           {isFormModified && (
-            <>
+            <div className={styles.ModifiedActions}>
               <Button
                 inline
                 variant="primary"
@@ -279,7 +215,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
                 label="Cancel"
                 type="button"
               />
-            </>
+            </div>
           )}
         </div>
       </form>

@@ -36,8 +36,13 @@ $borderRadius: 8px;
     .Actions {
       display: flex;
       flex-direction: row;
-      gap: 10px;
+      justify-content: space-between;
       min-height: 50px;
+      .ModifiedActions {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+      }
     }
 
     .Error {

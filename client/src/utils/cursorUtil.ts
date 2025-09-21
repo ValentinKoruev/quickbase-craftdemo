@@ -22,7 +22,6 @@ export const setCursorIndex = (editableDiv: HTMLDivElement, index: number) => {
   let node: ChildNode | undefined;
 
   while ((node = nodeStack.shift())) {
-    console.log(node);
     if (node.nodeType === 3) {
       // Text node
       const textLength = (node.textContent || "").length;

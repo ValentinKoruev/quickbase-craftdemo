@@ -28,7 +28,7 @@
       "@customTypes/*": ["src/types/*"],
       "@queries/*": ["src/queries/*"],
       "@utils/*": ["src/utils/*"],
-      "@config": ["src/config"]
+      "@config/*": ["src/config/*"]
     }
   },
   "include": ["src"]

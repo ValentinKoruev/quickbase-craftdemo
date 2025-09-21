@@ -7,7 +7,7 @@ export type FieldVariantText = {
   value: string;
   placeholder?: string;
   maxLength?: number;
-  onChange: ({
+  onChange?: ({
     name,
     value,
     type,
@@ -22,20 +22,33 @@ export type FieldVariantDropdown = {
   type: "dropdown";
   name: string;
   id: string;
-  choices: string[];
-  onChange?: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
+  value: string;
+  choices?: string[];
+  onChange?: ({
+    name,
+    value,
+    type,
+  }: {
+    name: string;
+    value: string;
+    type: string;
+  }) => void;
 };
 
 export type FieldVariantCheckbox = {
   type: "checkbox";
   name: string;
   id: string;
-  checked: boolean;
-  onChange?: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
+  value: boolean;
+  onChange?: ({
+    name,
+    value,
+    type,
+  }: {
+    name: string;
+    value: boolean;
+    type: string;
+  }) => void;
 };
 
 export type FieldVariantReadOnly = {
@@ -47,8 +60,16 @@ export type FieldVariantList = {
   type: "list";
   name: string;
   id: string;
-  choices: string[];
-  onChoiceChange: (newChoices: string[]) => void;
+  value: string[];
+  onChange?: ({
+    name,
+    value,
+    type,
+  }: {
+    name: string;
+    value: string[];
+    type: string;
+  }) => void;
   sort?: "asc" | "desc";
 };
 
@@ -62,6 +83,7 @@ export type FieldVariant =
 
 export type FieldVariantButton = {
   type: "button";
+  value: string;
   button: IButtonProps;
 };
 
@@ -73,3 +95,12 @@ export type FieldBuilderData = {
   choices?: string[];
   order?: "asc" | "desc";
 };
+
+export type FieldValue = string | boolean | string[];
+export interface IFieldBuilderInput {
+  label: string;
+  name: string;
+  variant: FieldVariant;
+  alias?: string;
+  validation?: (value: FieldValue) => string | null;
+}

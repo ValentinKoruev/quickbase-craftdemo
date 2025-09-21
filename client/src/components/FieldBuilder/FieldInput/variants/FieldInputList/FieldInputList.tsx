@@ -6,14 +6,14 @@ import type { FieldVariantList } from "@customTypes/fieldBuilder.types";
 import styles from "../../FieldInput.module.scss";
 
 const FieldInputList: React.FC<FieldVariantList> = ({
-  choices,
+  value: choices,
   sort = "asc",
-  onChoiceChange,
+  onChange = () => {},
 }) => {
   const handleRemoveChoice = (index: number) => {
     if (choices === undefined) return;
     const newChoices = choices.filter((_, i) => i !== index);
-    onChoiceChange(newChoices);
+    onChange({ name: "choices", value: newChoices, type: "list" });
   };
 
   return (

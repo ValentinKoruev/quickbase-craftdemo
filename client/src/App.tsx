@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import apiQueries, { apiCacheTags } from "@queries/api";
+import { multiselectorBuilderConfig } from "@config/multiselectorBuilderConfig";
 import FieldBuilder from "@components/FieldBuilder";
 
 import styles from "./App.module.scss";
@@ -28,7 +29,7 @@ function App() {
 
   return (
     <div className={styles.AppContainer}>
-      <FieldBuilder {...fieldData} defaultValue={fieldData.default} />
+      <FieldBuilder {...multiselectorBuilderConfig(fieldData)} />
     </div>
   );
 }

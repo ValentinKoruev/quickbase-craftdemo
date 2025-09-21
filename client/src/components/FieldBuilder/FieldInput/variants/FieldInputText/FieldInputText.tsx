@@ -8,9 +8,8 @@ const FieldInputText = ({
   name,
   id,
   value,
-  placeholder = "",
   maxLength = 1000,
-  onChange,
+  onChange = () => {},
 }: FieldVariantText) => {
   const divRef = useRef<HTMLDivElement | null>(null);
   const isInternalChangeRef = useRef(false);

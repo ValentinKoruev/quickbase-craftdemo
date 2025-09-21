@@ -5,8 +5,8 @@ import styles from "../../FieldInput.module.scss";
 const FieldInputCheckbox: React.FC<FieldVariantCheckbox> = ({
   name,
   id,
-  checked,
-  onChange,
+  value: checked,
+  onChange = () => {},
 }) => {
   return (
     <div className={styles.FieldCheckboxContainer}>
@@ -17,7 +17,7 @@ const FieldInputCheckbox: React.FC<FieldVariantCheckbox> = ({
         className={styles.FieldCheckbox}
         checked={checked}
         readOnly
-        onChange={onChange}
+        onChange={() => onChange({ name, value: !checked, type: "checkbox" })}
       />
       <span className={styles.CheckboxLabel}>A Value is required</span>
     </div>
