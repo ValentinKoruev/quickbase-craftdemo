@@ -1,4 +1,4 @@
-import styles from "@components/FieldBuilder/variants/FieldInput.module.scss";
+import styles from "@components/FieldBuilder/variants/FieldElement.module.scss";
 import { Icon } from "@components/UI";
 
 interface IListElementProps {

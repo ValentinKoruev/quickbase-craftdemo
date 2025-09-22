@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
-import FieldInputText from "./FieldInputText";
+import FieldElementText from "./FieldElementText";
 import type { FieldVariantText } from "@customTypes/fieldBuilder.types";
 import * as cursorUtil from "@utils/cursorUtil";
 import * as editableDivUtils from "@utils/editableDivUtils";
@@ -16,7 +16,7 @@ beforeEach(() => {
   vi.mocked(editableDivUtils.appendSpanElement).mockImplementation(() => {});
 });
 
-describe("FieldInputText Component", () => {
+describe("FieldElementText Component", () => {
   const defaultProps: FieldVariantText = {
     name: "textField",
     id: "text-field-id",
@@ -31,7 +31,7 @@ describe("FieldInputText Component", () => {
   });
 
   it("renders with the correct structure and attributes", () => {
-    const { getByTestId } = render(<FieldInputText {...defaultProps} />);
+    const { getByTestId } = render(<FieldElementText {...defaultProps} />);
 
     const inputDiv = getByTestId("field-input");
 
@@ -42,7 +42,7 @@ describe("FieldInputText Component", () => {
 
   it("calls onChange with correct parameters when text is changed", () => {
     const { getByTestId } = render(
-      <FieldInputText {...defaultProps} onChange={mockOnChange} />
+      <FieldElementText {...defaultProps} onChange={mockOnChange} />
     );
 
     const inputDiv = getByTestId("field-input");
@@ -81,7 +81,7 @@ describe("FieldInputText Component", () => {
     );
 
     render(
-      <FieldInputText
+      <FieldElementText
         {...defaultProps}
         value="This is a very long text"
         maxLength={10}
@@ -93,7 +93,7 @@ describe("FieldInputText Component", () => {
   });
 
   it("sets cursor position on focus", () => {
-    const { getByTestId } = render(<FieldInputText {...defaultProps} />);
+    const { getByTestId } = render(<FieldElementText {...defaultProps} />);
     const inputDiv = getByTestId("field-input");
 
     fireEvent.focus(inputDiv);
@@ -110,7 +110,7 @@ describe("FieldInputText Component", () => {
       );
     });
 
-    render(<FieldInputText {...defaultProps} />);
+    render(<FieldElementText {...defaultProps} />);
 
     expect(editableDivUtils.createNewTextNode).toHaveBeenCalled();
   });

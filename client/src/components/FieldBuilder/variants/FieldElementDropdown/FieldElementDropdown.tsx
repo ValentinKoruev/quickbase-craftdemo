@@ -1,9 +1,9 @@
 import classNames from "classnames";
 import type { FieldVariantDropdown } from "@customTypes/fieldBuilder.types";
 
-import styles from "@components/FieldBuilder/variants/FieldInput.module.scss";
+import styles from "@components/FieldBuilder/variants/FieldElement.module.scss";
 
-const FieldInputDropdown: React.FC<FieldVariantDropdown> = ({
+const FieldElementDropdown: React.FC<FieldVariantDropdown> = ({
   id,
   name,
   value,
@@ -18,7 +18,7 @@ const FieldInputDropdown: React.FC<FieldVariantDropdown> = ({
       name={name}
       value={value}
       onChange={(e) => onChange({ name, value: e.target.value })}
-      className={classNames(styles.FieldInput, styles.FieldSelect)}
+      className={classNames(styles.FieldElement, styles.FieldSelect)}
     >
       {choices?.map((choice, index) => (
         <option key={`choice-${index}`} value={choice}>
@@ -29,4 +29,4 @@ const FieldInputDropdown: React.FC<FieldVariantDropdown> = ({
   );
 };
 
-export default FieldInputDropdown;
+export default FieldElementDropdown;

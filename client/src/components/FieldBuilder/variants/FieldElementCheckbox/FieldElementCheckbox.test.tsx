@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
-import FieldInputCheckbox from "./FieldInputCheckbox";
+import FieldElementCheckbox from "./FieldElementCheckbox";
 
-describe("FieldInputCheckbox Component", () => {
+describe("FieldElementCheckbox Component", () => {
   const defaultProps = {
     name: "required",
     id: "field-required",
@@ -11,7 +11,7 @@ describe("FieldInputCheckbox Component", () => {
   };
 
   it("renders checkbox with correct attributes", () => {
-    const { container } = render(<FieldInputCheckbox {...defaultProps} />);
+    const { container } = render(<FieldElementCheckbox {...defaultProps} />);
     const checkbox = container.querySelector('input[type="checkbox"]');
 
     expect(checkbox).toBeInTheDocument();
@@ -21,14 +21,14 @@ describe("FieldInputCheckbox Component", () => {
   });
 
   it("shows the checkbox input", () => {
-    const { container } = render(<FieldInputCheckbox {...defaultProps} />);
+    const { container } = render(<FieldElementCheckbox {...defaultProps} />);
     const checkbox = container.querySelector('input[type="checkbox"]');
     expect(checkbox).toBeInTheDocument();
   });
 
   it("renders checkbox as checked when value is true", () => {
     const { container } = render(
-      <FieldInputCheckbox {...defaultProps} value={true} />
+      <FieldElementCheckbox {...defaultProps} value={true} />
     );
     const checkbox = container.querySelector('input[type="checkbox"]');
 
@@ -38,7 +38,7 @@ describe("FieldInputCheckbox Component", () => {
   it("calls onChange with toggled value when clicked", () => {
     const mockOnChange = vi.fn();
     const { container } = render(
-      <FieldInputCheckbox {...defaultProps} onChange={mockOnChange} />
+      <FieldElementCheckbox {...defaultProps} onChange={mockOnChange} />
     );
 
     const checkbox = container.querySelector('input[type="checkbox"]');
@@ -54,7 +54,7 @@ describe("FieldInputCheckbox Component", () => {
   it("toggles from true to false when clicked", () => {
     const mockOnChange = vi.fn();
     const { container } = render(
-      <FieldInputCheckbox
+      <FieldElementCheckbox
         {...defaultProps}
         value={true}
         onChange={mockOnChange}
@@ -72,7 +72,7 @@ describe("FieldInputCheckbox Component", () => {
   });
 
   it("has appropriate CSS classes", () => {
-    const { container } = render(<FieldInputCheckbox {...defaultProps} />);
+    const { container } = render(<FieldElementCheckbox {...defaultProps} />);
 
     const checkboxContainer = container.firstChild;
     const checkbox = container.querySelector('input[type="checkbox"]');

@@ -11,12 +11,12 @@ import { Button } from "@components/UI";
 import styles from "./FieldBuilder.module.scss";
 
 import {
-  FieldInputButton,
-  FieldInputCheckbox,
-  FieldInputDropdown,
-  FieldInputList,
-  FieldInputReadonly,
-  FieldInputText,
+  FieldElementButton,
+  FieldElementCheckbox,
+  FieldElementDropdown,
+  FieldElementList,
+  FieldElementReadonly,
+  FieldElementText,
 } from "./variants";
 import useFieldBuilder from "./hooks/useFieldBuilder";
 
@@ -56,7 +56,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
     switch (field.variant.type) {
       case "text":
         return (
-          <FieldInputText
+          <FieldElementText
             {...field.variant}
             value={formData[field.name] as string}
             onChange={onChange}
@@ -64,14 +64,14 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
         );
       case "readonly":
         return (
-          <FieldInputReadonly
+          <FieldElementReadonly
             {...field.variant}
             value={formData[field.name] as string}
           />
         );
       case "dropdown":
         return (
-          <FieldInputDropdown
+          <FieldElementDropdown
             {...field.variant}
             value={formData[field.name] as string}
             onChange={onChange}
@@ -79,7 +79,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
         );
       case "checkbox":
         return (
-          <FieldInputCheckbox
+          <FieldElementCheckbox
             {...field.variant}
             value={formData[field.name] as boolean}
             onChange={onChange}
@@ -87,14 +87,14 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
         );
       case "list":
         return (
-          <FieldInputList
+          <FieldElementList
             {...field.variant}
             value={formData[field.name] as string[]}
             onChange={onChange}
           />
         );
       case "button":
-        return <FieldInputButton {...field.variant} />;
+        return <FieldElementButton {...field.variant} />;
       default:
         return null;
     }
@@ -113,7 +113,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
           return (
             <div
               key={`field-${field.name}`}
-              className={styles.FieldInputContainer}
+              className={styles.FieldElementContainer}
             >
               <span className={styles.InputLabel}>{field.label}</span>
               {renderFieldVariant(field)}

@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
-import FieldInputDropdown from "./FieldInputDropdown";
+import FieldElementDropdown from "./FieldElementDropdown";
 import type { FieldVariantDropdown } from "@customTypes/fieldBuilder.types";
 
-describe("FieldInputDropdown Component", () => {
+describe("FieldElementDropdown Component", () => {
   const defaultProps: FieldVariantDropdown = {
     name: "type",
     id: "field-type",
@@ -13,7 +13,7 @@ describe("FieldInputDropdown Component", () => {
   };
 
   it("renders dropdown with correct attributes", () => {
-    const { getByTestId } = render(<FieldInputDropdown {...defaultProps} />);
+    const { getByTestId } = render(<FieldElementDropdown {...defaultProps} />);
     const dropdown = getByTestId("field-input");
 
     expect(dropdown).toBeInTheDocument();
@@ -23,7 +23,7 @@ describe("FieldInputDropdown Component", () => {
   });
 
   it("renders all choices as options", () => {
-    const { container } = render(<FieldInputDropdown {...defaultProps} />);
+    const { container } = render(<FieldElementDropdown {...defaultProps} />);
     const options = container.querySelectorAll("option");
 
     expect(options.length).toBe(3);
@@ -35,7 +35,7 @@ describe("FieldInputDropdown Component", () => {
   it("calls onChange when selection changes", () => {
     const mockOnChange = vi.fn();
     const { getByTestId } = render(
-      <FieldInputDropdown {...defaultProps} onChange={mockOnChange} />
+      <FieldElementDropdown {...defaultProps} onChange={mockOnChange} />
     );
 
     const dropdown = getByTestId("field-input") as HTMLSelectElement;
@@ -48,10 +48,10 @@ describe("FieldInputDropdown Component", () => {
   });
 
   it("applies correct CSS classes", () => {
-    const { getByTestId } = render(<FieldInputDropdown {...defaultProps} />);
+    const { getByTestId } = render(<FieldElementDropdown {...defaultProps} />);
     const dropdown = getByTestId("field-input");
 
-    expect(dropdown.className).toContain("FieldInput");
+    expect(dropdown.className).toContain("FieldElement");
     expect(dropdown.className).toContain("FieldSelect");
   });
 });

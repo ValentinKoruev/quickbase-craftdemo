@@ -1,8 +1,8 @@
 import type { FieldVariantCheckbox } from "@customTypes/fieldBuilder.types";
 
-import styles from "@components/FieldBuilder/variants/FieldInput.module.scss";
+import styles from "@components/FieldBuilder/variants/FieldElement.module.scss";
 
-const FieldInputCheckbox: React.FC<FieldVariantCheckbox> = ({
+const FieldElementCheckbox: React.FC<FieldVariantCheckbox> = ({
   name,
   id,
   value: checked,
@@ -29,4 +29,4 @@ const FieldInputCheckbox: React.FC<FieldVariantCheckbox> = ({
   );
 };
 
-export default FieldInputCheckbox;
+export default FieldElementCheckbox;

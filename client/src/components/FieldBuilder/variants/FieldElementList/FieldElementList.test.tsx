@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
-import FieldInputList from "./FieldInputList";
+import FieldElementList from "./FieldElementList";
 import type { FieldVariantList } from "@customTypes/fieldBuilder.types";
 
 // Mock the UI components
@@ -33,7 +33,7 @@ vi.mock("@utils/orderBy", () => ({
   },
 }));
 
-describe("FieldInputList Component", () => {
+describe("FieldElementList Component", () => {
   const defaultProps: FieldVariantList = {
     name: "choices",
     id: "field-choices",
@@ -42,7 +42,7 @@ describe("FieldInputList Component", () => {
   };
 
   it("renders list with correct number of items", () => {
-    const { getByTestId } = render(<FieldInputList {...defaultProps} />);
+    const { getByTestId } = render(<FieldElementList {...defaultProps} />);
     const list = getByTestId("field-input");
     const items = list.querySelectorAll("li");
 
@@ -56,7 +56,7 @@ describe("FieldInputList Component", () => {
       value: ["B", "C", "A"],
     };
 
-    const { getByTestId } = render(<FieldInputList {...props} />);
+    const { getByTestId } = render(<FieldElementList {...props} />);
     const list = getByTestId("field-input");
     const items = list.querySelectorAll("li");
 
@@ -73,7 +73,7 @@ describe("FieldInputList Component", () => {
       sort: "desc" as "desc" | "asc",
     };
 
-    const { getByTestId } = render(<FieldInputList {...props} />);
+    const { getByTestId } = render(<FieldElementList {...props} />);
     const list = getByTestId("field-input");
     const items = list.querySelectorAll("li");
 
@@ -86,7 +86,7 @@ describe("FieldInputList Component", () => {
   it("calls onChange when an item is removed", () => {
     const mockOnChange = vi.fn();
     const { getAllByRole } = render(
-      <FieldInputList {...defaultProps} onChange={mockOnChange} />
+      <FieldElementList {...defaultProps} onChange={mockOnChange} />
     );
 
     const removeButtons = getAllByRole("button");
@@ -106,7 +106,7 @@ describe("FieldInputList Component", () => {
       maxLength: 20,
     };
 
-    const { container } = render(<FieldInputList {...props} />);
+    const { container } = render(<FieldElementList {...props} />);
 
     const normalPart = container.querySelector(".ChoiceLabel");
     const dangerPart = container.querySelector(".DangerLabel");

@@ -2,10 +2,10 @@ import { useRef } from "react";
 import type { FieldVariantText } from "@customTypes/fieldBuilder.types";
 import { setCursorIndex } from "@utils/cursorUtil";
 
-import styles from "@components/FieldBuilder/variants/FieldInput.module.scss";
+import styles from "@components/FieldBuilder/variants/FieldElement.module.scss";
 import useDivEditable from "@components/FieldBuilder/hooks/useDivEditable";
 
-const FieldInputText = ({
+const FieldElementText = ({
   name,
   id,
   value,
@@ -40,7 +40,7 @@ const FieldInputText = ({
   return (
     <div
       id={id}
-      className={styles.FieldInput}
+      className={styles.FieldElement}
       ref={divRef}
       contentEditable={true}
       suppressContentEditableWarning={true}
@@ -52,4 +52,4 @@ const FieldInputText = ({
   );
 };
 
-export default FieldInputText;
+export default FieldElementText;

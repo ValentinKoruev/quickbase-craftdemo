@@ -8,9 +8,9 @@ import orderBy from "@utils/orderBy";
 import { Button } from "@components/UI";
 import ListElement from "./ListElement";
 
-import styles from "@components/FieldBuilder/variants/FieldInput.module.scss";
+import styles from "@components/FieldBuilder/variants/FieldElement.module.scss";
 
-const FieldInputList: React.FC<FieldVariantList> = ({
+const FieldElementList: React.FC<FieldVariantList> = ({
   value: choices,
   name,
   sort = "asc",
@@ -54,7 +54,7 @@ const FieldInputList: React.FC<FieldVariantList> = ({
     <div className={styles.FieldListContainer}>
       <ul
         data-testid="field-input"
-        className={classNames(styles.FieldInput, styles.FieldList)}
+        className={classNames(styles.FieldElement, styles.FieldList)}
       >
         {choices &&
           orderBy(choices, sort).map((choice, index) => (
@@ -88,4 +88,4 @@ const FieldInputList: React.FC<FieldVariantList> = ({
   );
 };
 
-export default FieldInputList;
+export default FieldElementList;

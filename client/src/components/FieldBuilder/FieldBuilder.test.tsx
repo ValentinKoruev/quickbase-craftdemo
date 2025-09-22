@@ -56,12 +56,12 @@ vi.mock("./variants", () => {
     };
 
   return {
-    FieldInputText: createMockComponent("text"),
-    FieldInputReadonly: createMockComponent("readonly"),
-    FieldInputDropdown: createMockComponent("dropdown"),
-    FieldInputCheckbox: createMockComponent("checkbox"),
-    FieldInputList: createMockComponent("list"),
-    FieldInputButton: createMockComponent("button"),
+    FieldElementText: createMockComponent("text"),
+    FieldElementReadonly: createMockComponent("readonly"),
+    FieldElementDropdown: createMockComponent("dropdown"),
+    FieldElementCheckbox: createMockComponent("checkbox"),
+    FieldElementList: createMockComponent("list"),
+    FieldElementButton: createMockComponent("button"),
   };
 });
 
@@ -173,21 +173,21 @@ describe("FieldBuilder Component", () => {
     const { getAllByTestId } = renderWithQueryClient(
       <FieldBuilder {...defaultProps} />
     );
-    const fieldInputs = getAllByTestId("field-input");
+    const FieldElements = getAllByTestId("field-input");
 
-    expect(fieldInputs.length).toBe(3);
+    expect(FieldElements.length).toBe(3);
 
-    expect(fieldInputs[0]).toHaveAttribute("data-name", "label");
-    expect(fieldInputs[0]).toHaveAttribute("data-type", "text");
-    expect(fieldInputs[0]).toHaveAttribute("data-value", "Test Field");
+    expect(FieldElements[0]).toHaveAttribute("data-name", "label");
+    expect(FieldElements[0]).toHaveAttribute("data-type", "text");
+    expect(FieldElements[0]).toHaveAttribute("data-value", "Test Field");
 
-    expect(fieldInputs[1]).toHaveAttribute("data-name", "type");
-    expect(fieldInputs[1]).toHaveAttribute("data-type", "dropdown");
-    expect(fieldInputs[1]).toHaveAttribute("data-value", "multi-select");
+    expect(FieldElements[1]).toHaveAttribute("data-name", "type");
+    expect(FieldElements[1]).toHaveAttribute("data-type", "dropdown");
+    expect(FieldElements[1]).toHaveAttribute("data-value", "multi-select");
 
-    expect(fieldInputs[2]).toHaveAttribute("data-name", "required");
-    expect(fieldInputs[2]).toHaveAttribute("data-type", "checkbox");
-    expect(fieldInputs[2]).toHaveAttribute("data-value", "false");
+    expect(FieldElements[2]).toHaveAttribute("data-name", "required");
+    expect(FieldElements[2]).toHaveAttribute("data-type", "checkbox");
+    expect(FieldElements[2]).toHaveAttribute("data-value", "false");
   });
 
   it("renders the clear button", () => {

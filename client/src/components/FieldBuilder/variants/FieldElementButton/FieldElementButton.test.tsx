@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render } from "@testing-library/react";
-import FieldElementButton from "./FieldnputButton";
+import FieldElementButton from "./FieldElementButton";
 import type { FieldVariantButton } from "@customTypes/fieldBuilder.types";
 
 // Mock the Button component
@@ -18,7 +18,7 @@ vi.mock("@components/UI", () => ({
   ),
 }));
 
-describe("FieldInputButton Component", () => {
+describe("FieldElementButton Component", () => {
   const mockOnClick = vi.fn();
 
   const defaultProps: FieldVariantButton = {
@@ -59,6 +59,6 @@ describe("FieldInputButton Component", () => {
     const { container } = render(<FieldElementButton {...defaultProps} />);
     const wrapper = container.firstChild;
 
-    expect(wrapper).toHaveClass("FieldInputButton");
+    expect(wrapper).toHaveClass("FieldElementButton");
   });
 });
