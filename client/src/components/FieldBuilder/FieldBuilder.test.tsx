@@ -5,20 +5,31 @@ import FieldBuilder from "./FieldBuilder";
 import type { IFieldBuilderProps } from "./FieldBuilder";
 import styles from "./FieldBuilder.module.scss";
 
-// Mock the FieldInput component
-vi.mock("@components/FieldBuilder/FieldInput", () => {
-  return {
-    default: ({ label, variant }: { label: string; variant: any }) => {
-      const mockOnChange = variant.onChange;
+// Mock the variant components
+vi.mock("./variants", () => {
+  const createMockComponent =
+    (type: string) =>
+    ({
+      name,
+      id,
+      value,
+      onChange,
+    }: {
+      name: string;
+      id?: string;
+      value: any;
+      onChange?: (data: { name: string; value: any; type?: string }) => void;
+    }) => {
+      const mockOnChange = onChange;
 
       const testButton = mockOnChange ? (
         <button
           data-testid="mock-field-input-change"
           onClick={() => {
             mockOnChange({
-              name: variant.name,
+              name,
               value: "changed value",
-              type: variant.type,
+              type,
             });
           }}
         >
@@ -29,19 +40,28 @@ vi.mock("@components/FieldBuilder/FieldInput", () => {
       return (
         <div
           data-testid="field-input"
-          data-name={variant.name}
-          data-type={variant.type}
+          data-name={name}
+          data-type={type}
           data-value={
-            typeof variant.value === "object"
-              ? JSON.stringify(variant.value)
-              : variant.value
+            typeof value === "object"
+              ? JSON.stringify(value)
+              : value?.toString()
           }
+          id={id}
         >
-          <span>{label}</span>
+          <span>Mock {type} input</span>
           {testButton}
         </div>
       );
-    },
+    };
+
+  return {
+    FieldInputText: createMockComponent("text"),
+    FieldInputReadonly: createMockComponent("readonly"),
+    FieldInputDropdown: createMockComponent("dropdown"),
+    FieldInputCheckbox: createMockComponent("checkbox"),
+    FieldInputList: createMockComponent("list"),
+    FieldInputButton: createMockComponent("button"),
   };
 });
 
@@ -186,7 +206,7 @@ describe("FieldBuilder Component", () => {
     expect(changeButtons.length).toBe(3);
   });
 
-  it("provides onChange handler to field inputs", () => {
+  it("provides onChange handler to field inputs", async () => {
     const { getAllByTestId } = renderWithQueryClient(
       <FieldBuilder {...defaultProps} />
     );
@@ -194,44 +214,58 @@ describe("FieldBuilder Component", () => {
     const changeButtons = getAllByTestId("mock-field-input-change");
     expect(changeButtons.length).toBe(3);
 
-    changeButtons[0].click();
+    await vi.waitFor(() => {
+      fireEvent.click(changeButtons[0]);
+    });
   });
 
   it("calls saveQuery with form data when submitted", async () => {
     mockSaveQuery.mockClear();
 
-    const { getAllByTestId, getByTestId } = renderWithQueryClient(
+    const { getAllByTestId, queryByText } = renderWithQueryClient(
       <FieldBuilder {...defaultProps} />
     );
+
     const changeButtons = getAllByTestId("mock-field-input-change");
-    fireEvent.click(changeButtons[0]);
 
-    const saveButton = getByTestId("button-save-changes");
-    expect(saveButton).toBeInTheDocument();
+    await vi.waitFor(() => {
+      fireEvent.click(changeButtons[0]);
+    });
 
-    fireEvent.click(saveButton);
+    let saveButton;
+    await vi.waitFor(() => {
+      saveButton = queryByText("Save changes");
+      expect(saveButton).toBeTruthy();
+    });
 
-    await new Promise(process.nextTick);
+    await vi.waitFor(() => {
+      fireEvent.click(saveButton!);
+    });
 
-    expect(mockSaveQuery).toHaveBeenCalledWith(
-      expect.objectContaining({
-        label: "changed value",
-      })
-    );
+    await vi.waitFor(() => {
+      expect(mockSaveQuery).toHaveBeenCalledWith(
+        expect.objectContaining({
+          label: "changed value",
+        })
+      );
+    });
   });
 
-  it("clears the form when clear button is clicked", () => {
+  it("clears the form when clear button is clicked", async () => {
     const { getByTestId } = renderWithQueryClient(
       <FieldBuilder {...defaultProps} />
     );
 
     const clearButton = getByTestId("button-clear");
-    clearButton.click();
+
+    await vi.waitFor(() => {
+      fireEvent.click(clearButton);
+    });
 
     //? Test passes if it doesn't throw an error
   });
 
-  it("applies beforeSaveFormat when provided", () => {
+  it("applies beforeSaveFormat when provided", async () => {
     const propsWithFormatter = {
       ...defaultProps,
       beforeSaveFormat: mockBeforeSaveFormat,
@@ -246,7 +280,9 @@ describe("FieldBuilder Component", () => {
     );
     expect(form).toBeInTheDocument();
 
-    fireEvent.submit(form!);
+    await vi.waitFor(() => {
+      fireEvent.submit(form!);
+    });
 
     expect(mockBeforeSaveFormat).toHaveBeenCalled();
   });

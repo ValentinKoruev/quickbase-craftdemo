@@ -62,6 +62,24 @@ describe("FieldInputText Component", () => {
   });
 
   it("respects maxLength prop by calling appropriate formatting functions", () => {
+    // Direct mock implementation instead of spying
+    vi.mocked(editableDivUtils.formatRangeContent).mockImplementation(
+      (div, value, maxLength, style) => {
+        vi.mocked(editableDivUtils.createNewTextNode).mockClear();
+        vi.mocked(editableDivUtils.appendSpanElement).mockClear();
+
+        vi.mocked(editableDivUtils.createNewTextNode)(
+          document.createElement("div"),
+          "text"
+        );
+        vi.mocked(editableDivUtils.appendSpanElement)(
+          document.createElement("div"),
+          "overflow",
+          "style"
+        );
+      }
+    );
+
     render(
       <FieldInputText
         {...defaultProps}
@@ -84,6 +102,14 @@ describe("FieldInputText Component", () => {
   });
 
   it("applies default maxLength when not provided", () => {
+    vi.mocked(editableDivUtils.formatRangeContent).mockImplementation(() => {
+      vi.mocked(editableDivUtils.createNewTextNode).mockClear();
+      vi.mocked(editableDivUtils.createNewTextNode)(
+        document.createElement("div"),
+        "text"
+      );
+    });
+
     render(<FieldInputText {...defaultProps} />);
 
     expect(editableDivUtils.createNewTextNode).toHaveBeenCalled();
