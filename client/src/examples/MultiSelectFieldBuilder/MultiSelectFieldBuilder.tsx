@@ -9,6 +9,7 @@ import {
 } from "@utils/fieldBuilderUtils";
 import {
   beforeSaveFormat,
+  choicesValidation,
   defaultValueValidation,
   labelValidation,
   saveQuery,
@@ -64,7 +65,8 @@ const MultiSelectFieldBuilder: React.FC<MultiSelectFieldBuilderProps> = ({
     {
       maxLength: 40,
       sort: "asc",
-    }
+    },
+    choicesValidation
   );
 
   const orderField = createDropdownField(

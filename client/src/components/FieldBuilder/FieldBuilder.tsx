@@ -165,7 +165,10 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
           newData[field.name] = [];
           continue;
         }
-        if (field.variant.type === "readonly") {
+        if (
+          field.variant.type === "readonly" ||
+          field.variant.type === "dropdown"
+        ) {
           newData[field.name] = field.variant.value || "";
           continue;
         }

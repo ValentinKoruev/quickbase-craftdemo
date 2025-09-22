@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import type { FieldVariantText } from "@customTypes/fieldBuilder.types";
 import { getCursorIndex, setCursorIndex } from "@utils/cursorUtil";
-import { appendSpanElement, createNewTextNode } from "./utils/textFieldUtils";
+import { appendSpanElement, createNewTextNode } from "@utils/editableDivUtils";
 import styles from "../../FieldInput.module.scss";
 
 const FieldInputText = ({
