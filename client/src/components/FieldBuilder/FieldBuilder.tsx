@@ -11,6 +11,7 @@ import { Button } from "@components/UI";
 import styles from "./FieldBuilder.module.scss";
 
 export interface IFieldBuilderProps {
+  title?: string;
   fields: IFieldBuilderInput[];
   saveQuery: (
     fieldData: Record<string, FieldValue>
@@ -24,6 +25,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
   fields = [],
   saveQuery,
   beforeSaveFormat,
+  title,
 }) => {
   const initialProps = useRef<Record<string, FieldValue>>(
     fields.reduce(
@@ -49,15 +51,23 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   const saveMutation = useMutation({
-    mutationFn: (fieldData: Record<string, FieldValue>) => saveQuery(fieldData),
-    onSuccess: (res) => {
-      // TODO: fix whatever this is
-      const data = { ...res.data.data, defaultValue: res.data.data.default };
+    mutationFn: async (fieldData: Record<string, FieldValue>) => {
+      const res = await saveQuery(fieldData);
 
-      console.log("Field saved successfully:", data);
+      return res.data;
+    },
+    onSuccess: (data) => {
+      const updatedData = { ...data };
 
-      setFormData(() => ({ ...data }));
-      initialProps.current = { ...data };
+      if (data.default) {
+        updatedData.defaultValue = data.default;
+        delete updatedData.default;
+      }
+
+      console.log("Field saved successfully:", updatedData);
+
+      setFormData(() => ({ ...updatedData }));
+      initialProps.current = { ...updatedData };
       setIsFormModified(false);
       setError(null);
     },
@@ -144,13 +154,24 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
   };
 
   const onClear = () => {
-    setFormData({
-      label: "",
-      type: "multi-select",
-      required: false,
-      defaultValue: "",
-      choices: [],
-      order: "asc",
+    setFormData(() => {
+      const newData: Record<string, FieldValue> = {};
+      for (const field of fields) {
+        if (field.variant.type === "checkbox") {
+          newData[field.name] = false;
+          continue;
+        }
+        if (field.variant.type === "list") {
+          newData[field.name] = [];
+          continue;
+        }
+        if (field.variant.type === "readonly") {
+          newData[field.name] = field.variant.value || "";
+          continue;
+        }
+        newData[field.name] = "";
+      }
+      return newData;
     });
     setError(null);
   };
@@ -158,7 +179,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
   return (
     <div className={styles.FieldBuilder}>
       <div className={styles.FieldBuilderHeader}>
-        <h3 className={styles.FieldBuilderTitle}>Field Builder</h3>
+        <h3 className={styles.FieldBuilderTitle}>{title ?? "Field Builder"}</h3>
       </div>
       <form
         className={styles.FieldBuilderFormContainer}

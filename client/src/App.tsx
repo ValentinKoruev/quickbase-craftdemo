@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import apiQueries, { apiCacheTags } from "@queries/api";
 
 import MultiSelectFieldBuilder from "./examples/MultiSelectFieldBuilder";
+import ProductFieldBuilder from "./examples/ProductFieldBuilder";
 
 import styles from "./App.module.scss";
 
@@ -29,6 +30,8 @@ function App() {
   return (
     <div className={styles.AppContainer}>
       <MultiSelectFieldBuilder fieldData={fieldData} />
+
+      {/* <ProductFieldBuilder /> */}
     </div>
   );
 }
