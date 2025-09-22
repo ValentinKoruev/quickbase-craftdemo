@@ -3,12 +3,23 @@ import { render, fireEvent } from "@testing-library/react";
 import FieldInputList from "./FieldInputList";
 import type { FieldVariantList } from "@customTypes/fieldBuilder.types";
 
-// Mock the Icon component
+// Mock the UI components
 vi.mock("@components/UI", () => ({
   Icon: ({ name, className }: { name: string; className?: string }) => (
     <span data-testid="mock-icon" data-icon-name={name} className={className}>
       Icon Mock
     </span>
+  ),
+  Button: ({ children, onClick, variant, color, disabled, className }: any) => (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={className}
+      data-variant={variant}
+      data-color={color}
+    >
+      {children}
+    </button>
   ),
 }));
 
@@ -85,7 +96,6 @@ describe("FieldInputList Component", () => {
     expect(mockOnChange).toHaveBeenCalledWith({
       name: "choices",
       value: ["Option 2", "Option 3"],
-      type: "list",
     });
   });
 

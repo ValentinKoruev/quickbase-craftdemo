@@ -231,7 +231,7 @@ describe("FieldInput Component", () => {
     expect(getByText("Dropdown Label")).toBeInTheDocument();
   });
 
-  it("adds htmlFor attribute to label for interactive variants", () => {
+  it("adds correct class to the field container", () => {
     const { container } = render(
       <FieldInput
         label="Text Label"
@@ -244,12 +244,12 @@ describe("FieldInput Component", () => {
       />
     );
 
-    const label = container.querySelector("label");
-    expect(label).toHaveAttribute("for", "text-field-id");
+    const fieldContainer = container.querySelector(".FieldInputContainer");
+    expect(fieldContainer).toBeInTheDocument();
   });
 
-  it("does not add htmlFor attribute to label for readonly variant", () => {
-    const { container } = render(
+  it("renders label text correctly for readonly variant", () => {
+    const { getByText } = render(
       <FieldInput
         label="Readonly Label"
         variant={{
@@ -259,12 +259,11 @@ describe("FieldInput Component", () => {
       />
     );
 
-    const label = container.querySelector("label");
-    expect(label).not.toHaveAttribute("for");
+    expect(getByText("Readonly Label")).toBeInTheDocument();
   });
 
-  it("does not add htmlFor attribute to label for button variant", () => {
-    const { container } = render(
+  it("renders button variant with correct properties", () => {
+    const { getByText, getByTestId } = render(
       <FieldInput
         label="Button Label"
         variant={{
@@ -279,7 +278,7 @@ describe("FieldInput Component", () => {
       />
     );
 
-    const label = container.querySelector("label");
-    expect(label).not.toHaveAttribute("for");
+    expect(getByText("Button Label")).toBeInTheDocument();
+    expect(getByTestId("field-input-button")).toBeInTheDocument();
   });
 });

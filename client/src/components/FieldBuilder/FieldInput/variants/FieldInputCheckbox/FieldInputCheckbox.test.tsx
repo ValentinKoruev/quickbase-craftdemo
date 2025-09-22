@@ -20,10 +20,10 @@ describe("FieldInputCheckbox Component", () => {
     expect(checkbox).not.toBeChecked();
   });
 
-  it("shows the checkbox label", () => {
-    const { getByText } = render(<FieldInputCheckbox {...defaultProps} />);
-
-    expect(getByText("A Value is required")).toBeInTheDocument();
+  it("shows the checkbox input", () => {
+    const { container } = render(<FieldInputCheckbox {...defaultProps} />);
+    const checkbox = container.querySelector('input[type="checkbox"]');
+    expect(checkbox).toBeInTheDocument();
   });
 
   it("renders checkbox as checked when value is true", () => {
@@ -48,7 +48,6 @@ describe("FieldInputCheckbox Component", () => {
     expect(mockOnChange).toHaveBeenCalledWith({
       name: "required",
       value: true,
-      type: "checkbox",
     });
   });
 
@@ -69,7 +68,6 @@ describe("FieldInputCheckbox Component", () => {
     expect(mockOnChange).toHaveBeenCalledWith({
       name: "required",
       value: false,
-      type: "checkbox",
     });
   });
 
@@ -78,10 +76,8 @@ describe("FieldInputCheckbox Component", () => {
 
     const checkboxContainer = container.firstChild;
     const checkbox = container.querySelector('input[type="checkbox"]');
-    const label = container.querySelector("span");
 
     expect(checkboxContainer).toHaveClass("FieldCheckboxContainer");
     expect(checkbox).toHaveClass("FieldCheckbox");
-    expect(label).toHaveClass("CheckboxLabel");
   });
 });

@@ -3,15 +3,17 @@ import { render, fireEvent } from "@testing-library/react";
 import FieldInputText from "./FieldInputText";
 import type { FieldVariantText } from "@customTypes/fieldBuilder.types";
 import * as cursorUtil from "@utils/cursorUtil";
-import * as textFieldUtils from "./utils/textFieldUtils";
+import * as editableDivUtils from "@utils/editableDivUtils";
 
 // Mock the modules - simpler approach
 vi.mock("@utils/cursorUtil");
-vi.mock("./utils/textFieldUtils");
+vi.mock("@utils/editableDivUtils");
 
 // Setup the mocks for each test
 beforeEach(() => {
   vi.mocked(cursorUtil.getCursorIndex).mockReturnValue(5);
+  vi.mocked(editableDivUtils.createNewTextNode).mockImplementation(() => {});
+  vi.mocked(editableDivUtils.appendSpanElement).mockImplementation(() => {});
 });
 
 describe("FieldInputText Component", () => {
@@ -56,7 +58,6 @@ describe("FieldInputText Component", () => {
     expect(mockOnChange).toHaveBeenCalledWith({
       name: defaultProps.name,
       value: "Updated text",
-      type: defaultProps.type,
     });
   });
 
@@ -69,8 +70,8 @@ describe("FieldInputText Component", () => {
       />
     );
 
-    expect(textFieldUtils.createNewTextNode).toHaveBeenCalled();
-    expect(textFieldUtils.appendSpanElement).toHaveBeenCalled();
+    expect(editableDivUtils.createNewTextNode).toHaveBeenCalled();
+    expect(editableDivUtils.appendSpanElement).toHaveBeenCalled();
   });
 
   it("sets cursor position on focus", () => {
@@ -85,6 +86,6 @@ describe("FieldInputText Component", () => {
   it("applies default maxLength when not provided", () => {
     render(<FieldInputText {...defaultProps} />);
 
-    expect(textFieldUtils.createNewTextNode).toHaveBeenCalled();
+    expect(editableDivUtils.createNewTextNode).toHaveBeenCalled();
   });
 });

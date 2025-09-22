@@ -44,7 +44,6 @@ describe("FieldInputDropdown Component", () => {
     expect(mockOnChange).toHaveBeenCalledWith({
       name: "type",
       value: "checkbox",
-      type: "dropdown",
     });
   });
 
