@@ -5,10 +5,20 @@ import type {
   FieldValue,
   IFieldBuilderInput,
 } from "@customTypes/fieldBuilder.types";
-import FieldInput from "@components/FieldBuilder/FieldInput";
+
 import { Button } from "@components/UI";
 
 import styles from "./FieldBuilder.module.scss";
+
+import {
+  FieldInputButton,
+  FieldInputCheckbox,
+  FieldInputDropdown,
+  FieldInputList,
+  FieldInputReadonly,
+  FieldInputText,
+} from "./variants";
+import useFieldBuilder from "./hooks/useFieldBuilder";
 
 export interface IFieldBuilderProps {
   title?: string;
@@ -27,156 +37,67 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
   beforeSaveFormat,
   title,
 }) => {
-  const initialProps = useRef<Record<string, FieldValue>>(
-    fields.reduce(
-      (acc, field) => ({
-        ...acc,
-        [field.name]: field.variant.value ?? "",
-      }),
-      {}
-    )
-  );
-
-  const [formData, setFormData] = useState<Record<string, FieldValue>>(
-    fields.reduce(
-      (acc, field) => ({
-        ...acc,
-        [field.name]: field.variant.value ?? "",
-      }),
-      {}
-    )
-  );
-
-  const [isFormModified, setIsFormModified] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const saveMutation = useMutation({
-    mutationFn: async (fieldData: Record<string, FieldValue>) => {
-      const res = await saveQuery(fieldData);
-
-      return res.data;
-    },
-    onSuccess: (data) => {
-      const updatedData = { ...data };
-
-      if (data.default) {
-        updatedData.defaultValue = data.default;
-        delete updatedData.default;
-      }
-
-      console.log("Field saved successfully:", updatedData);
-
-      setFormData(() => ({ ...updatedData }));
-      initialProps.current = { ...updatedData };
-      setIsFormModified(false);
-      setError(null);
-    },
-    onError: () => {
-      setError("An error occurred while saving the field.");
-    },
+  const {
+    error,
+    formData,
+    saveMutation,
+    hasFieldChanges,
+    onCancel,
+    onChange,
+    onClear,
+    onSaveChange,
+  } = useFieldBuilder({
+    fields,
+    saveQuery,
+    beforeSaveFormat,
   });
 
-  useEffect(() => {
-    const initialState = initialProps.current;
-
-    for (const key of Object.keys(formData)) {
-      if (
-        typeof formData[key] === "object" &&
-        typeof initialState[key] === "object"
-      ) {
-        if (
-          JSON.stringify(formData[key]) !== JSON.stringify(initialState[key])
-        ) {
-          setIsFormModified(true);
-          return;
-        }
-        continue;
-      }
-
-      if (String(formData[key]).trim() !== String(initialState[key]).trim()) {
-        setIsFormModified(true);
-        return;
-      }
+  const renderFieldVariant = (field: IFieldBuilderInput) => {
+    switch (field.variant.type) {
+      case "text":
+        return (
+          <FieldInputText
+            {...field.variant}
+            value={formData[field.name] as string}
+            onChange={onChange}
+          />
+        );
+      case "readonly":
+        return (
+          <FieldInputReadonly
+            {...field.variant}
+            value={formData[field.name] as string}
+          />
+        );
+      case "dropdown":
+        return (
+          <FieldInputDropdown
+            {...field.variant}
+            value={formData[field.name] as string}
+            onChange={onChange}
+          />
+        );
+      case "checkbox":
+        return (
+          <FieldInputCheckbox
+            {...field.variant}
+            value={formData[field.name] as boolean}
+            onChange={onChange}
+          />
+        );
+      case "list":
+        return (
+          <FieldInputList
+            {...field.variant}
+            value={formData[field.name] as string[]}
+            onChange={onChange}
+          />
+        );
+      case "button":
+        return <FieldInputButton {...field.variant} />;
+      default:
+        return null;
     }
-
-    setIsFormModified(false);
-  }, [formData]);
-
-  const validateForm = (
-    formData: Record<string, FieldValue>
-  ): string[] | null => {
-    const errors: string[] = [];
-    for (const field of fields) {
-      if (field.validation) {
-        const error = field.validation(formData[field.name]);
-        if (error) errors.push(error);
-      }
-    }
-
-    return errors.length > 0 ? errors : null;
-  };
-
-  const onChange = ({
-    name,
-    value,
-  }: {
-    name: string;
-    value: string | string[] | boolean;
-  }) => {
-    setError(null);
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const onSaveChange = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    let currentFormData = formData;
-    if (beforeSaveFormat) {
-      currentFormData = beforeSaveFormat(formData);
-    }
-
-    const validationError = validateForm(currentFormData);
-
-    if (validationError) {
-      setError(validationError[0]);
-      return;
-    }
-
-    saveMutation.mutate(currentFormData);
-  };
-
-  const onCancel = () => {
-    setFormData({ ...initialProps.current });
-    setError(null);
-  };
-
-  const onClear = () => {
-    setFormData(() => {
-      const newData: Record<string, FieldValue> = {};
-      for (const field of fields) {
-        if (field.variant.type === "checkbox") {
-          newData[field.name] = false;
-          continue;
-        }
-        if (field.variant.type === "list") {
-          newData[field.name] = [];
-          continue;
-        }
-        if (
-          field.variant.type === "readonly" ||
-          field.variant.type === "dropdown"
-        ) {
-          newData[field.name] = field.variant.value || "";
-          continue;
-        }
-        newData[field.name] = "";
-      }
-      return newData;
-    });
-    setError(null);
   };
 
   return (
@@ -190,20 +111,13 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
       >
         {fields.map((field) => {
           return (
-            <FieldInput
-              key={field.name}
-              label={field.label}
-              variant={
-                field.variant.type === "readonly" ||
-                field.variant.type === "button"
-                  ? { ...field.variant, value: formData[field.name] as any }
-                  : {
-                      ...field.variant,
-                      value: formData[field.name] as any,
-                      onChange,
-                    }
-              }
-            />
+            <div
+              key={`field-${field.name}`}
+              className={styles.FieldInputContainer}
+            >
+              <span className={styles.InputLabel}>{field.label}</span>
+              {renderFieldVariant(field)}
+            </div>
           );
         })}
         {/* The empty divs are for grid column spacing.*/}
@@ -220,7 +134,7 @@ const FieldBuilder: React.FC<IFieldBuilderProps> = ({
             type="button"
           />
 
-          {isFormModified && (
+          {hasFieldChanges && (
             <div className={styles.ModifiedActions}>
               <Button
                 inline

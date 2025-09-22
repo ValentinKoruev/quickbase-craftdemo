@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render } from "@testing-library/react";
-import FieldInputButton from "./FieldnputButton";
+import FieldElementButton from "./FieldnputButton";
 import type { FieldVariantButton } from "@customTypes/fieldBuilder.types";
 
 // Mock the Button component
@@ -37,7 +37,7 @@ describe("FieldInputButton Component", () => {
   });
 
   it("renders the button with correct props", () => {
-    const { getByTestId } = render(<FieldInputButton {...defaultProps} />);
+    const { getByTestId } = render(<FieldElementButton {...defaultProps} />);
     const button = getByTestId("mock-button");
 
     expect(button).toBeInTheDocument();
@@ -47,7 +47,7 @@ describe("FieldInputButton Component", () => {
   });
 
   it("passes onClick handler to Button component", () => {
-    const { getByTestId } = render(<FieldInputButton {...defaultProps} />);
+    const { getByTestId } = render(<FieldElementButton {...defaultProps} />);
     const button = getByTestId("mock-button");
 
     button.click();
@@ -56,7 +56,7 @@ describe("FieldInputButton Component", () => {
   });
 
   it("applies correct wrapper class", () => {
-    const { container } = render(<FieldInputButton {...defaultProps} />);
+    const { container } = render(<FieldElementButton {...defaultProps} />);
     const wrapper = container.firstChild;
 
     expect(wrapper).toHaveClass("FieldInputButton");

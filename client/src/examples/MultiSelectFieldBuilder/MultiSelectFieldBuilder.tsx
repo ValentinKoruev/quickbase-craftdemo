@@ -26,9 +26,7 @@ const MultiSelectFieldBuilder: React.FC<MultiSelectFieldBuilderProps> = ({
     "Label",
     "label",
     fieldData.label,
-    {
-      maxLength: 40,
-    },
+    {},
     labelValidation
   );
 

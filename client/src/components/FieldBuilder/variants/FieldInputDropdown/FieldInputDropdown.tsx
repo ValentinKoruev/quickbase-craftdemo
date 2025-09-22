@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import type { FieldVariantDropdown } from "@customTypes/fieldBuilder.types";
 
-import styles from "../../FieldInput.module.scss";
+import styles from "@components/FieldBuilder/variants/FieldInput.module.scss";
 
 const FieldInputDropdown: React.FC<FieldVariantDropdown> = ({
   id,

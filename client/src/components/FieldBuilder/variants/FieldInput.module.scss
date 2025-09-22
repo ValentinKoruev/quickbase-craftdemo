@@ -1,0 +1,160 @@
+@use "@styles/variables" as *;
+@use "@styles/mixins" as *;
+
+.DangerLabel {
+  color: $color-danger;
+}
+
+.FieldInput {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid $neutral-300;
+  border-radius: 6px;
+  font-size: $font-sm;
+  outline: none;
+  background-color: $neutral-100;
+  overflow-wrap: anywhere;
+
+  @include media($tablet) {
+    width: auto;
+    margin-right: 0.5rem;
+  }
+}
+
+.FieldReadOnly {
+  display: inline-flex;
+  align-items: center;
+  font-size: $font-sm;
+  width: 100%;
+
+  @include media($tablet) {
+    width: auto;
+  }
+}
+
+.FieldListContainer {
+  display: flex;
+  flex-direction: column;
+
+  ul.FieldList {
+    padding: 5px 0;
+    list-style: none;
+    height: 200px;
+    overflow-y: auto;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    @include media($tablet) {
+      height: 200px;
+    }
+
+    li {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 10px;
+      font-size: $font-sm;
+
+      .ChoiceRemoveButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        height: fit-content;
+        width: fit-content;
+        padding: 4px;
+
+        @include media($tablet) {
+          padding: 0;
+        }
+
+        .ChoiceIcon {
+          display: block;
+          width: 1rem;
+          height: 1rem;
+          fill: $color-danger;
+
+          @include media($tablet) {
+            display: none;
+          }
+        }
+      }
+
+      &:hover {
+        .ChoiceIcon {
+          display: block;
+        }
+        cursor: pointer;
+        background-color: $neutral-200;
+      }
+    }
+  }
+
+  .FieldListActions {
+    position: relative;
+    top: -1px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    margin-right: 0.5rem;
+    align-items: center;
+    border-bottom-right-radius: 6px;
+
+    .AddToListInput {
+      width: 100%;
+      outline: none;
+      padding: 0.5em;
+      display: flex;
+      align-items: center;
+      font-size: $font-sm;
+      border-bottom-left-radius: 6px;
+      border: 1px solid $neutral-300;
+      flex: 1;
+
+      white-space: nowrap;
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+    .AddToListButton {
+      border: none;
+      border-bottom-right-radius: 6px;
+    }
+  }
+}
+
+.FieldSelect {
+  height: 100%;
+}
+
+.FieldCheckboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  outline: none;
+  padding: 0;
+
+  .FieldCheckbox {
+    width: 1.2rem;
+    height: 1.2rem;
+    accent-color: $color-primary;
+
+    @include media($tablet) {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  .FieldCheckboxLabel {
+    font-size: $font-sm;
+    user-select: none;
+    cursor: pointer;
+    color: $neutral-600;
+  }
+
+  .CheckboxLabel {
+    font-size: $font-sm;
+  }
+}

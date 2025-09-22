@@ -4,8 +4,8 @@ import type {
   FieldBuilderData,
   FieldValue,
 } from "@customTypes/fieldBuilder.types";
-2;
 
+//? Currently not used anywhere, but keeping for reference and demonstration purposes
 export const multiselectorBuilderConfig: (
   fieldData: FieldBuilderData
 ) => IFieldBuilderProps = (fieldData) => {

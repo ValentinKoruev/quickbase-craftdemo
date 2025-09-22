@@ -7,7 +7,7 @@ import { getCursorIndex, setCursorIndex } from "@utils/cursorUtil";
 import { appendSpanElement, createNewTextNode } from "@utils/editableDivUtils";
 import { Button, Icon } from "@components/UI";
 
-import styles from "../../FieldInput.module.scss";
+import styles from "@components/FieldBuilder/variants/FieldInput.module.scss";
 
 const FieldInputList: React.FC<FieldVariantList> = ({
   value: choices,

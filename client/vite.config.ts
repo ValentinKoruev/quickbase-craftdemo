@@ -12,6 +12,7 @@ export default defineConfig({
       "@customTypes": path.resolve(__dirname, "./src/types"),
       "@queries": path.resolve(__dirname, "./src/queries"),
       "@utils": path.resolve(__dirname, "./src/utils"),
+      "@hooks": path.resolve(__dirname, "./src/hooks"),
       "@config": path.resolve(__dirname, "./src/config"),
     },
   },

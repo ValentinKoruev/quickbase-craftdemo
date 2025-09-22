@@ -1,9 +1,9 @@
 import { Button } from "@components/UI";
 import type { FieldVariantButton } from "@customTypes/fieldBuilder.types";
 
-import styles from "../../FieldInput.module.scss";
+import styles from "@components/FieldBuilder/variants/FieldInput.module.scss";
 
-const FieldInputButton: React.FC<FieldVariantButton> = ({ button }) => {
+const FieldElementButton: React.FC<FieldVariantButton> = ({ button }) => {
   return (
     <div className={styles.FieldInputButton}>
       <Button {...button} />
@@ -11,4 +11,4 @@ const FieldInputButton: React.FC<FieldVariantButton> = ({ button }) => {
   );
 };
 
-export default FieldInputButton;
+export default FieldElementButton;

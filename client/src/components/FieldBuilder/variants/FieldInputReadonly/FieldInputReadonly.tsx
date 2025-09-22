@@ -1,6 +1,6 @@
 import type { FieldVariantReadOnly } from "@customTypes/fieldBuilder.types";
 
-import styles from "../../FieldInput.module.scss";
+import styles from "@components/FieldBuilder/variants/FieldInput.module.scss";
 
 const FieldInputReadonly: React.FC<FieldVariantReadOnly> = ({
   value,

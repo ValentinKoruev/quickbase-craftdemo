@@ -45,19 +45,19 @@ export type FieldVariantList = {
   onChange?: ({ name, value }: { name: string; value: string[] }) => void;
 };
 
-export type FieldVariant =
-  | FieldVariantText
-  | FieldVariantDropdown
-  | FieldVariantCheckbox
-  | FieldVariantReadOnly
-  | FieldVariantList
-  | FieldVariantButton;
-
 export type FieldVariantButton = {
   type: "button";
   value: string;
   button: IButtonProps;
 };
+
+export type FieldVariant =
+  | FieldVariantText
+  | FieldVariantDropdown
+  | FieldVariantCheckbox
+  | FieldVariantList
+  | FieldVariantReadOnly
+  | FieldVariantButton;
 
 export type FieldBuilderData = {
   label: string;
@@ -73,6 +73,5 @@ export interface IFieldBuilderInput {
   label: string;
   name: string;
   variant: FieldVariant;
-  alias?: string;
   validation?: (value: FieldValue) => string | null;
 }

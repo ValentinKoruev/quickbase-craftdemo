@@ -57,6 +57,20 @@ $borderRadius: 8px;
       border-bottom-right-radius: $borderRadius;
     }
 
+    .FieldInputContainer {
+      display: contents;
+      gap: 10px;
+
+      .InputLabel {
+        font-size: $font-md;
+        font-weight: 500;
+
+        @include media($tablet) {
+          padding: 0.5rem;
+        }
+      }
+    }
+
     .Actions {
       display: flex;
       flex-direction: row;
