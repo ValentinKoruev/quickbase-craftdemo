@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "@styles/variables" as *;
 
 .BaseButton {
@@ -18,7 +19,7 @@
       color: $color-foreground-primary;
 
       &:hover {
-        background-color: darken($color-primary, 10%);
+        background-color: color.adjust($color-primary, $lightness: -10%);
       }
     }
     &.SecondaryColor {
@@ -26,7 +27,7 @@
       color: $color-foreground-secondary;
 
       &:hover {
-        background-color: darken($color-secondary, 10%);
+        background-color: color.adjust($color-secondary, $lightness: -10%);
       }
     }
     &.SuccessColor {
@@ -34,7 +35,7 @@
       color: $color-foreground-primary;
 
       &:hover {
-        background-color: darken($color-success, 10%);
+        background-color: color.adjust($color-success, $lightness: -10%);
       }
     }
     &.DangerColor {
@@ -42,7 +43,7 @@
       color: $color-foreground-primary;
 
       &:hover {
-        background-color: darken($color-danger, 10%);
+        background-color: color.adjust($color-danger, $lightness: -10%);
       }
     }
   }

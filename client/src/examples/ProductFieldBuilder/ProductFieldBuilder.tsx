@@ -8,16 +8,7 @@ import {
   createListField,
   createReadonlyField,
 } from "@utils/fieldBuilderUtils";
-import {
-  saveQuery,
-  beforeSaveFormat,
-  requiredFieldValidation,
-  nameValidation,
-  skuValidation,
-  priceValidation,
-  stockValidation,
-  categoriesValidation,
-} from "./config";
+import { saveQuery, beforeSaveFormat, priceValidation } from "./config";
 
 interface ProductFieldBuilderProps {
   productId?: string;

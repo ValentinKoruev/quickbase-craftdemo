@@ -1,6 +1,6 @@
 import type { FieldValue } from "@customTypes/fieldBuilder.types";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { generateFieldsMap, validateForm } from "../utils/builderUtils";
 import useFieldChanges from "@hooks/useFieldChange";
 
