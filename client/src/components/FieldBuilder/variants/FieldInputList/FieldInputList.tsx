@@ -1,11 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import classNames from "classnames";
 import type { FieldVariantList } from "@customTypes/fieldBuilder.types";
 
+import useDivEditable from "@components/FieldBuilder/hooks/useDivEditable";
 import orderBy from "@utils/orderBy";
-import { getCursorIndex, setCursorIndex } from "@utils/cursorUtil";
-import { appendSpanElement, createNewTextNode } from "@utils/editableDivUtils";
-import { Button, Icon } from "@components/UI";
+
+import { Button } from "@components/UI";
+import ListElement from "./ListElement";
 
 import styles from "@components/FieldBuilder/variants/FieldInput.module.scss";
 
@@ -20,59 +21,30 @@ const FieldInputList: React.FC<FieldVariantList> = ({
   const [addChoiceValue, setAddChoiceValue] = useState("");
   const isInternalChangeRef = useRef(false);
 
-  const formatRangeContent = (
-    value: string,
-    preserveCursor: boolean = false
-  ) => {
-    if (addInputRef.current === null || value === null) return;
-
-    const cursorIndex = preserveCursor
-      ? getCursorIndex(addInputRef.current)
-      : null;
-
-    createNewTextNode(addInputRef.current, value.slice(0, maxLength));
-
-    if (value.length > maxLength)
-      appendSpanElement(
-        addInputRef.current,
-        value.slice(maxLength),
-        styles.DangerLabel
-      );
-
-    if (preserveCursor && cursorIndex !== null)
-      setCursorIndex(addInputRef.current, cursorIndex);
-  };
-
-  useEffect(() => {
-    if (isInternalChangeRef.current === true) {
-      formatRangeContent(addChoiceValue, true);
-      isInternalChangeRef.current = false;
-      return;
-    }
-
-    formatRangeContent(addChoiceValue);
-  }, [addChoiceValue, maxLength]);
+  useDivEditable({
+    divRef: addInputRef,
+    isInternalChange: isInternalChangeRef.current,
+    value: addChoiceValue,
+    maxLength,
+    specialStyle: styles.DangerLabel,
+  });
 
   const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    const newValue = e.currentTarget.textContent || "";
     isInternalChangeRef.current = true;
 
-    setAddChoiceValue(newValue);
+    setAddChoiceValue(e.currentTarget.textContent || "");
   };
 
   const handleRemoveChoice = (index: number) => {
-    if (choices === undefined) return;
     const newChoices = choices.filter((_, i) => i !== index);
     onChange({ name, value: newChoices });
   };
 
-  const hanndleAddChoice = () => {
+  const handleAddChoice = () => {
     if (addChoiceValue.trim().length === 0) return;
-    const newChoices = choices
-      ? [...choices, addChoiceValue.trim()]
-      : [addChoiceValue.trim()];
+    const newChoices = [...choices, addChoiceValue.trim()];
 
     onChange({ name, value: newChoices });
     setAddChoiceValue("");
@@ -86,27 +58,13 @@ const FieldInputList: React.FC<FieldVariantList> = ({
       >
         {choices &&
           orderBy(choices, sort).map((choice, index) => (
-            <li key={`choice-${index}`}>
-              {choice.trim().length > maxLength ? (
-                <>
-                  <span className={styles.ChoiceLabel}>
-                    {choice.slice(0, maxLength)}
-                    <span className={styles.DangerLabel}>
-                      {choice.slice(maxLength, choice.length)}
-                    </span>
-                  </span>
-                </>
-              ) : (
-                <span className={styles.ChoiceLabel}>{choice}</span>
-              )}
-              <button
-                onClick={() => handleRemoveChoice(index)}
-                type="button"
-                className={styles.ChoiceRemoveButton}
-              >
-                <Icon name="x-mark" className={styles.ChoiceIcon} />
-              </button>
-            </li>
+            <ListElement
+              key={`choice-${index}`}
+              choice={choice}
+              index={index}
+              maxLength={maxLength}
+              handleRemoveChoice={handleRemoveChoice}
+            />
           ))}
       </ul>
       <div className={styles.FieldListActions}>
@@ -122,7 +80,7 @@ const FieldInputList: React.FC<FieldVariantList> = ({
           color="success"
           border="block"
           label="Add"
-          onClick={hanndleAddChoice}
+          onClick={handleAddChoice}
           className={styles.AddToListButton}
         />
       </div>

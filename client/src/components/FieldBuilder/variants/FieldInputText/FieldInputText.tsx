@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import type { FieldVariantText } from "@customTypes/fieldBuilder.types";
-import { getCursorIndex, setCursorIndex } from "@utils/cursorUtil";
-import { appendSpanElement, createNewTextNode } from "@utils/editableDivUtils";
+import { setCursorIndex } from "@utils/cursorUtil";
 
 import styles from "@components/FieldBuilder/variants/FieldInput.module.scss";
+import useDivEditable from "@components/FieldBuilder/hooks/useDivEditable";
 
 const FieldInputText = ({
   name,
@@ -15,54 +15,27 @@ const FieldInputText = ({
   const divRef = useRef<HTMLDivElement | null>(null);
   const isInternalChangeRef = useRef(false);
 
-  const formatRangeContent = (
-    value: string,
-    preserveCursor: boolean = false
-  ) => {
-    if (divRef.current === null || value === null) return;
-
-    const cursorIndex = preserveCursor ? getCursorIndex(divRef.current) : null;
-
-    createNewTextNode(divRef.current, value.slice(0, maxLength));
-
-    if (value.length > maxLength)
-      appendSpanElement(
-        divRef.current,
-        value.slice(maxLength),
-        styles.DangerLabel
-      );
-
-    if (preserveCursor && cursorIndex !== null)
-      setCursorIndex(divRef.current, cursorIndex);
-  };
-
-  useEffect(() => {
-    if (isInternalChangeRef.current === true) {
-      formatRangeContent(value, true);
-      isInternalChangeRef.current = false;
-      return;
-    }
-
-    formatRangeContent(value);
-  }, [value, maxLength]);
-
   const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    const newValue = e.currentTarget.textContent || "";
     isInternalChangeRef.current = true;
 
     onChange({
       name,
-      value: newValue,
+      value: e.currentTarget.textContent || "",
     });
   };
 
-  const onFocus = (e: React.FocusEvent<HTMLDivElement>) => {
-    if (!divRef.current) return;
-
+  const onFocus = (e: React.FocusEvent<HTMLDivElement>) =>
     setCursorIndex(e.currentTarget, value.length);
-  };
+
+  useDivEditable({
+    divRef,
+    isInternalChange: isInternalChangeRef.current,
+    value,
+    maxLength,
+    specialStyle: styles.DangerLabel,
+  });
 
   return (
     <div

@@ -23,7 +23,6 @@ export const setCursorIndex = (editableDiv: HTMLDivElement, index: number) => {
 
   while ((node = nodeStack.shift())) {
     if (node.nodeType === 3) {
-      // Text node
       const textLength = (node.textContent || "").length;
       if (charIndex + textLength >= index) {
         range.setStart(node, index - charIndex);
@@ -32,7 +31,6 @@ export const setCursorIndex = (editableDiv: HTMLDivElement, index: number) => {
       }
       charIndex += textLength;
     } else {
-      // Push child nodes in reverse order so we traverse in order
       let i = node.childNodes.length;
       while (i--) {
         nodeStack.push(node.childNodes[i]);
